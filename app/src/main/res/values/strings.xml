@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+
+    <string name="cd_movie_poster">Movie Poster</string>
+    <string name="movie_date">Release Date</string>
+    <string name="movie_genre">Genre</string>
+    <string name="movie_rating">Average Rating</string>
+
+    <string name="title_load_error">Movie Load Error</string>
+    <string name="dialog_placeholder">Dialog</string>
+    <string name="ok">OK</string>
+
+    <string name="vote_display">%.1f / 10</string>
+    <string name="movies">%s Movies</string>
+
+    <!-- Fonts -->
+    <string name="regular_roboto_cond">RegularRobotoCond</string>
+    <string name="regular_noto">RegularNoto</string>
+    <string name="light_roboto_cond">LightRobotoCond</string>
+
+    <!-- Settings -->
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">Movie Settings</string>
+    <string name="settings_sort_by_default" translatable="false">@string/settings_sort_by_popularity_value</string>
+
+    <string name="settings_sort_by_key" translatable="false">sort_by</string>
+    <string name="settings_sort_by_label">Sort By</string>
+
+    <!-- sort by Ratings -->
+    <string name="settings_sort_by_rating_label">Top Rated</string>
+    <string name="settings_sort_by_rating_value" translatable="false">top_rated</string>
+
+    <!-- sort by popularity -->
+    <string name="settings_sort_by_popularity_value" translatable="false">popular</string>
+    <string name="settings_sort_by_popularity_label">Popular</string>
+
+    <!-- sort by now playing -->
+    <string name="settings_sort_by_now_playing_label">Now Playing</string>
+    <string name="settings_sort_by_now_playing_value" translatable="false">now_playing</string>
+
+    <!-- sort by upcoming -->
+    <string name="settings_sort_by_upcoming_label">Upcoming</string>
+    <string name="settings_sort_by_upcoming_value" translatable="false">upcoming</string>
+    <string name="language">Language</string>
+
+    <!-- dialog messages -->
+    <string name="alert_api_key_missing">The API Key has is missing. Please contact the developer for support.</string>
+    <string name="error_movie_load_failed">Failed to load list of popular movies. Status Code \\u003D</string>
+    <string name="error_movie_fetch_failed">Failed to fetch list of popular movies.</string>
+    <string name="error_no_connection">No internet connection found. Please ensure that your device is connected to the internet and try again.</string>
+
+</resources>

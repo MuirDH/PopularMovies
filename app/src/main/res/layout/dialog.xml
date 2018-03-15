@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dialog_width"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBlack"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        style="@style/DialogTitle"
+        android:text="@string/title_load_error" />
+
+    <TextView
+        android:id="@+id/tv_dialog_caption"
+        style="@style/Dialog"
+        tools:text="@string/dialog_placeholder" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_divider_height"
+        android:background="@color/colorBackground" />
+
+    <Button
+        android:id="@+id/dismiss_dialog_btn"
+        style="@style/DialogButton"
+        android:text="@string/ok" />
+
+</LinearLayout>
