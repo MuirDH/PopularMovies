@@ -3,7 +3,7 @@ This is the first project in Udacity's Android Development NanoDegree.
 
 PROJECT LICENSE
 
-This project was submitted by Muir Halleron as part of the Nanodegree At Udacity.
+This project was submitted by Muir Halleron as part of the Android Development Nanodegree At Udacity.
 
 As part of Udacity Honor code, your submissions must be your own work, hence
 submitting this project as yours will cause you to break the Udacity Honor Code
