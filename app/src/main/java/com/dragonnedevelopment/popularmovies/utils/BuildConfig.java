@@ -7,7 +7,9 @@ package com.dragonnedevelopment.popularmovies.utils;
 
 public class BuildConfig {
 
-    public static final String API_KEY = ""; // TODO: you must add your TMDb API key here for the app to work
+    // TODO: you must add your TMDb API key here for the app to work
+    // TODO: before uploading code to GitHub or other public forum, remember to REMOVE the API_KEY string!
+    public static final String API_KEY = "";
 
     // number of columns to be displayed
     public static final int GRID_COLUMNS_PORTRAIT = 3;

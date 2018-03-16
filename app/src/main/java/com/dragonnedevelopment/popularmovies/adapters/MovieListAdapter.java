@@ -101,8 +101,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
      */
     @Override
     public int getItemCount() {
-        if (movieResponse == null) return 0;
-        else return movieResponse.getFilmList().size();
+        return (movieResponse == null) ? 0 : movieResponse.getFilmList().size();
     }
 
     /**
@@ -113,8 +112,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
      */
     public void setMovieData(MovieResponse movieResponse) {
         this.movieResponse = movieResponse;
-        List<Film> filmList;
-        filmList = movieResponse.getFilmList();
+        List<Film> filmList = movieResponse.getFilmList();
         notifyDataSetChanged();
     }
 

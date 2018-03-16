@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
             MovieApiInterface movieApiInterface = MovieApiController.getRetrofit(context).create(MovieApiInterface.class);
 
-            final Call<MovieResponse> responseCall = movieApiInterface.getFilmList(sortByPreferences);
+            final Call<MovieResponse> responseCall = movieApiInterface.getFilmList(sortByPreferences, BuildConfig.API_KEY);
 
             makeRetrofitCall(responseCall);
 

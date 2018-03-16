@@ -34,5 +34,5 @@ public interface MovieApiInterface {
      * @return list of movies sorted by preference
      */
     @GET("movie/{preference}")
-    Call<MovieResponse> getFilmList(@Path("preference") String preference);
+    Call<MovieResponse> getFilmList(@Path("preference") String preference, @Query("api_key") String apiKey);
 }
