@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_favourites_activity">Favourites</string>
 
     <string name="cd_movie_poster">Movie Poster</string>
     <string name="movie_date">Release Date</string>
@@ -48,5 +49,17 @@
     <string name="error_movie_load_failed">Failed to load list of popular movies. Status Code \\u003D</string>
     <string name="error_movie_fetch_failed">Failed to fetch list of popular movies.</string>
     <string name="error_no_connection">No internet connection found. Please ensure that your device is connected to the internet and try again.</string>
+    <string name="menu_label_add_favourites">Add to Favourites</string>
+    <string name="info_already_faved">This film has already been added to your favourites.</string>
+    <string name="error_insert">Failed to add film to your favourites. Please try again.</string>
+    <string name="info_insert_successful">This film has been added to your favourites.</string>
+    <string name="error_favourites_load_failed">Failed to load favourite movies list.</string>
+    <string name="no_image">no image symbol</string>
+    <string name="tag_regular_noto">RegularNoto</string>
+    <string name="placeholder_review_author">Author Name</string>
+    <string name="placeholder_review">The film review goes here.</string>
+    <string name="label_read_more">Read More</string>
+    <string name="placeholder_trailer">The film trailer goes here.</string>
+    <string name="menu_label_show_favourites">Show Favourites</string>
 
 </resources>

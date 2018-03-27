@@ -15,5 +15,15 @@
     <dimen name="dialog_message_margin">20dp</dimen>
     <dimen name="dialog_divider_height">1dp</dimen>
     <dimen name="poster_spacing">2dp</dimen>
+    <dimen name="tab_layout_height">52dp</dimen>
+    <dimen name="tab_indicator_height">4dp</dimen>
+    <dimen name="tab_padding">12dp</dimen>
+    <dimen name="film_label_width">150dp</dimen>
+    <dimen name="film_label_height">150dp</dimen>
+    <dimen name="trailer_list_margin">60dp</dimen>
+    <dimen name="trailer_list_height">60dp</dimen>
+    <dimen name="trailer_list_width">60dp</dimen>
+    <dimen name="textsize_medium">18sp</dimen>
+    <dimen name="review_list_vertical_margin">8dp</dimen>
 
 </resources>

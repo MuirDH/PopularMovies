@@ -8,4 +8,6 @@
     <color name="colorBlack">#F2000000</color>
     <color name="colorSettingsPrimary">#000000</color>
     <color name="colorSettingsBackground">#222222</color>
+    <color name="colorTabBackground">#757575</color>
+    <color name="colorListBackground">#E2DFD6</color>
 </resources>

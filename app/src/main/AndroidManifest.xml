@@ -39,6 +39,19 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <provider
+            android:authorities="com.dragonnedevelopment.popularmovies"
+            android:name=".data.MovieProvider"
+            android:exported="false" />
+
+        <activity android:name=".FavouritesActivity"
+            android:label="@string/title_favourites_activity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
     </application>
 
 </manifest>
