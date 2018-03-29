@@ -9,10 +9,10 @@ import java.util.List;
  * an object that contains a list of {@link Film} items
  */
 
-public class MovieResponse {
+public class FilmResponse {
 
     /*
-     * {@link MovieResponse} attributes.
+     * {@link FilmResponse} attributes.
      * Each has a corresponding @SerializedName that is needed for GSON to map the JSON keys
      * (from TMDb API) with the attributes of the object.
      */
@@ -34,19 +34,19 @@ public class MovieResponse {
     private int totalPages;
 
     // empty constructor
-    public MovieResponse() {
+    public FilmResponse() {
 
     }
 
     /**
-     * default constructor. constructs a new {@link MovieResponse} object
+     * default constructor. constructs a new {@link FilmResponse} object
      *
      * @param filmList     the list of films
      * @param page         the page number
      * @param totalResults the total number of movies in the list
      * @param totalPages   the total number of pages
      */
-    private MovieResponse(List<Film> filmList, int page, int totalResults, int totalPages) {
+    private FilmResponse(List<Film> filmList, int page, int totalResults, int totalPages) {
         this.filmList = filmList;
         this.page = page;
         this.totalResults = totalResults;

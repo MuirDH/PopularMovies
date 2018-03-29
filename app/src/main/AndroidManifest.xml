@@ -41,7 +41,7 @@
 
         <provider
             android:authorities="com.dragonnedevelopment.popularmovies"
-            android:name=".data.MovieProvider"
+            android:name=".data.FilmProvider"
             android:exported="false" />
 
         <activity android:name=".FavouritesActivity"

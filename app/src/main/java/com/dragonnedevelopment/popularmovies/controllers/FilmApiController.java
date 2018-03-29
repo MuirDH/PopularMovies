@@ -18,14 +18,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * this class is used to issue network requests to TMDb API, using the base URL provided
  */
 
-public class MovieApiController {
+public class FilmApiController {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getRetrofit(Context context) throws NoConnectivityException {
+    public static Retrofit getClient(Context context) throws NoConnectivityException {
 
         // check if device has a connection, else throw an exception error and exit early
-        checkForConnection(context);
+        if (!Utils.hasConnectivity(context)) {
+            throw  new NoConnectivityException();
+        }
 
         if (retrofit == null) {
             // Create OkhttpClient.Builder object
@@ -50,7 +52,5 @@ public class MovieApiController {
         return retrofit;
     }
 
-    private static void checkForConnection(Context context) throws NoConnectivityException {
-        if (!Utils.hasConnectivity(context)) throw new NoConnectivityException();
-    }
+
 }

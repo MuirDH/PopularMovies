@@ -23,6 +23,16 @@
     </style>
 
     <!-- Detail Activity -->
+
+    <style name="DetailFilmLayoutHolder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/activity_margin</item>
+        <item name="android:paddingRight">@dimen/activity_margin</item>
+        <item name="android:paddingTop">@dimen/activity_margin</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
     <style name="DetailMovieImage">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -37,15 +47,6 @@
         <item name="android:textSize">@dimen/txtsize_title</item>
         <item name="android:tag">@string/light_roboto_cond</item>
         <item name="android:padding">@dimen/activity_margin</item>
-    </style>
-
-    <style name="DetailMovieLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">@dimen/activity_margin</item>
-        <item name="android:paddingRight">@dimen/activity_margin</item>
-        <item name="android:paddingTop">@dimen/activity_margin</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="DetailMovieLabels">

@@ -5,12 +5,16 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragonnedevelopment.popularmovies.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -21,6 +25,9 @@ import java.util.Locale;
 public class Utils {
 
     public static final String LOG_TAG = Utils.class.getSimpleName();
+
+    public static final String DATE_FORMAT_FROM = "yyyy-MM-dd";
+    public static final String DTE_FORMAT_TO = "dd MMMM yyyy";
 
 
     private void Utils() {
@@ -100,5 +107,26 @@ public class Utils {
         language = language.substring(0, 1).toUpperCase() + language.substring(1);
 
         return language;
+    }
+
+    /**
+     * utility method used to convert dates in format "yyyy-mm-dd" to dd MMMM yyyy" format
+     */
+    public static String getFormattedDate(Context context, String inputDate) {
+
+        String dateFormatted = "";
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT_FROM, Locale.ENGLISH);
+        SimpleDateFormat newFormat = new SimpleDateFormat(DTE_FORMAT_TO, Locale.ENGLISH);
+
+        try {
+            Date date = inputFormat.parse(inputDate);
+            dateFormatted = newFormat.format(date);
+        } catch (ParseException e) {
+            Log.e(LOG_TAG, e.toString());
+            dateFormatted = context.getString(R.string.error_no_release_date);
+        }
+
+        return dateFormatted;
     }
 }

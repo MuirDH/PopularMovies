@@ -31,4 +31,8 @@ public class BuildConfig {
     public static final String INTENT_EXTRA_KEY_MOVIE = "Movie";
     public static final String INTENT_EXTRA_KEY_TITLE = "ActionBar Title";
 
+    // YouTube information
+    public final static String VIDEO_SITE_NAME = "YouTube";
+    public static String BASE_VIDEO_URL = "http://www.youtube.com/watch?v=%1$s";
+    public static String BASE_VIDEO_THUMBNAIL_URL = "http://img.youtube.com/vi/%1$s/0.jpg";
 }

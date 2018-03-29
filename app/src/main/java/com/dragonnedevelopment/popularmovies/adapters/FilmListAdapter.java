@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.dragonnedevelopment.popularmovies.R;
 import com.dragonnedevelopment.popularmovies.models.Film;
-import com.dragonnedevelopment.popularmovies.models.MovieResponse;
+import com.dragonnedevelopment.popularmovies.models.FilmResponse;
 import com.dragonnedevelopment.popularmovies.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -20,13 +20,13 @@ import static com.dragonnedevelopment.popularmovies.utils.BuildConfig.BACKDROP_P
 
 /**
  * PopularMovies Created by Muir on 13/03/2018.
- * MovieListAdapter creates a list of weather forecasts to a
+ * FilmListAdapter creates a list of weather forecasts to a
  * {@link android.support.v7.widget.RecyclerView}
  */
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
+public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieListAdapterViewHolder> {
 
-    private MovieResponse movieResponse;
+    private FilmResponse filmResponse;
     private final MovieListAdapterOnClickHandler clickHandler;
     private Context context;
 
@@ -41,7 +41,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
      * OnClick handler for the adapter which handles when a single item is clicked
      * @param clickHandler
      */
-    public MovieListAdapter(MovieListAdapterOnClickHandler clickHandler) {
+    public FilmListAdapter(MovieListAdapterOnClickHandler clickHandler) {
         this.clickHandler = clickHandler;
     }
 
@@ -84,7 +84,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         String posterUrl;
 
         if (position < getItemCount()) {
-            Film film = movieResponse.getFilmList().get(position);
+            Film film = filmResponse.getFilmList().get(position);
             poster = film.getPosterPath();
             if (!Utils.isEmptyString(poster)) {
                 posterUrl = BACKDROP_POSTER_BASE_URL + poster;
@@ -101,18 +101,18 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
      */
     @Override
     public int getItemCount() {
-        return (movieResponse == null) ? 0 : movieResponse.getFilmList().size();
+        return (filmResponse == null) ? 0 : filmResponse.getFilmList().size();
     }
 
     /**
-     * method used to refresh the movie list once the MovieListAdapter is already created, to avoid
+     * method used to refresh the movie list once the FilmListAdapter is already created, to avoid
      * creating more than one.
      *
-     * @param movieResponse the new movie set to be displayed
+     * @param filmResponse the new movie set to be displayed
      */
-    public void setMovieData(MovieResponse movieResponse) {
-        this.movieResponse = movieResponse;
-        List<Film> filmList = movieResponse.getFilmList();
+    public void setMovieData(FilmResponse filmResponse) {
+        this.filmResponse = filmResponse;
+        List<Film> filmList = filmResponse.getFilmList();
         notifyDataSetChanged();
     }
 
@@ -135,7 +135,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Film film = movieResponse.getFilmList().get(adapterPosition);
+            Film film = filmResponse.getFilmList().get(adapterPosition);
             clickHandler.onClick(film);
         }
 

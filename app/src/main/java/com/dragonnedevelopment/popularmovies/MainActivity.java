@@ -1,13 +1,11 @@
 package com.dragonnedevelopment.popularmovies;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +14,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dragonnedevelopment.popularmovies.adapters.MovieListAdapter;
-import com.dragonnedevelopment.popularmovies.controllers.MovieApiController;
-import com.dragonnedevelopment.popularmovies.controllers.MovieApiInterface;
+import com.dragonnedevelopment.popularmovies.adapters.FilmListAdapter;
+import com.dragonnedevelopment.popularmovies.controllers.FilmApiController;
+import com.dragonnedevelopment.popularmovies.controllers.FilmApiInterface;
 import com.dragonnedevelopment.popularmovies.exceptions.NoConnectivityException;
 import com.dragonnedevelopment.popularmovies.models.Film;
-import com.dragonnedevelopment.popularmovies.models.MovieResponse;
+import com.dragonnedevelopment.popularmovies.models.FilmResponse;
 import com.dragonnedevelopment.popularmovies.utils.BuildConfig;
+import com.dragonnedevelopment.popularmovies.utils.UtilDialog;
 import com.dragonnedevelopment.popularmovies.utils.Utils;
 
 import java.util.List;
@@ -36,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MovieListAdapter.MovieListAdapterOnClickHandler, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements FilmListAdapter.MovieListAdapterOnClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String STATE_DIALOG = "state_dialog";
@@ -45,15 +42,12 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     private final Context context = this;
     private Toast toast;
     private List<Film> filmList;
-    private MovieResponse movieResponse;
+    private FilmResponse filmResponse;
     private RecyclerView recyclerView;
-    private MovieListAdapter movieListAdapter;
+    private FilmListAdapter filmListAdapter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Dialog dialog;
-    private TextView textViewDialogTitle;
-    private TextView textViewDialogCaption;
-    private Button buttonDialog;
+
 
     private Film currentFilm;
     private boolean isDialogVisible = false;
@@ -65,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         // Initialise views
         initializeUI();
-        setCustomTypeFace();
 
         // enable layout for SwipeRefresh
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -77,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         recyclerView.setHasFixedSize(true); // changes in content don't change the child layout size
 
         // Set adapter
-        movieListAdapter = new MovieListAdapter(this);
-        recyclerView.setAdapter(movieListAdapter);
+        filmListAdapter = new FilmListAdapter(this);
+        recyclerView.setAdapter(filmListAdapter);
 
         loadMovieData();
     }
@@ -109,76 +102,61 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
      */
     private void loadMovieData() {
 
-        if (isApiMissing()) return;
+       if (Utils.isEmptyString(BuildConfig.API_KEY)) {
+           isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), context);
+           swipeRefreshLayout.setRefreshing(false);
+           return;
+       }
 
-        // get the sort order preference before making a call to the API
-        String sortByPreferences = getSortOrderPreference();
+       SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+       String sortByPreferences = sharedPreferences.getString(
+               getString(R.string.settings_sort_by_key),
+               getString(R.string.settings_sort_by_default)
+       );
 
-        setActivityTitle(sortByPreferences);
+       setActivityTitle(sortByPreferences);
 
-        // make Retrofit call to TMDb API
+       // make retrofit call to tmdb api
         try {
-
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.VISIBLE);
 
-            MovieApiInterface movieApiInterface = MovieApiController.getRetrofit(context).create(MovieApiInterface.class);
+            FilmApiInterface apiInterface = FilmApiController.getClient(context).create(FilmApiInterface.class);
 
-            final Call<MovieResponse> responseCall = movieApiInterface.getFilmList(sortByPreferences, BuildConfig.API_KEY);
+            final Call<FilmResponse> responseCall = apiInterface.getFilmList(sortByPreferences, BuildConfig.API_KEY);
 
-            makeRetrofitCall(responseCall);
-
-        } catch (NoConnectivityException noConnectivityException) {
-
-            progressBar.setVisibility(View.INVISIBLE);
-            displayDialog(getString(R.string.error_no_connection));
-
-        }
-
-
-    }
-
-    private void makeRetrofitCall(Call<MovieResponse> responseCall) {
-        responseCall.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                int statusCode = response.code();
-                if (response.isSuccessful()) {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    movieResponse = response.body();
-                    movieListAdapter.setMovieData(movieResponse);
-                    movieListAdapter.notifyDataSetChanged();
-                    filmList = movieResponse.getFilmList();
-                } else {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    displayDialog(getString(R.string.error_movie_load_failed) + statusCode);
+            responseCall.enqueue(new Callback<FilmResponse>() {
+                @Override
+                public void onResponse(Call<FilmResponse> call, Response<FilmResponse> response) {
+                    int statusCode = response.code();
+                    if (response.isSuccessful()) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        filmResponse = response.body();
+                        filmListAdapter.setMovieData(filmResponse);
+                        filmListAdapter.notifyDataSetChanged();
+                        filmList = filmResponse.getFilmList();
+                    }else {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        isDialogVisible = UtilDialog.showDialog(getString(R.string.error_movie_load_failed)
+                        + statusCode, context);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
-                displayDialog(getString(R.string.error_movie_fetch_failed));
-            }
-        });
-    }
+                @Override
+                public void onFailure(Call<FilmResponse> call, Throwable t) {
 
-    @NonNull
-    private String getSortOrderPreference() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return sharedPreferences.getString(
-                getString(R.string.settings_sort_by_key),
-                getString(R.string.settings_sort_by_default));
-    }
-
-    private boolean isApiMissing() {
-        if (Utils.isEmptyString(BuildConfig.API_KEY)) {
-            displayDialog(getString(R.string.alert_api_key_missing));
-            swipeRefreshLayout.setRefreshing(false);
-            return true;
+                    progressBar.setVisibility(View.INVISIBLE);
+                    isDialogVisible = UtilDialog.showDialog(getString(R.string.error_movie_fetch_failed),
+                            context);
+                }
+            });
+        }catch (NoConnectivityException nce) {
+            progressBar.setVisibility(View.INVISIBLE);
+            isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), context);
         }
-        return false;
+
     }
+
 
     /**
      * sets the activity title depending on the movie list preference selected
@@ -201,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu); // inflate settings menu
+        getMenuInflater().inflate(R.menu.menu_favourites, menu);
         return true;
     }
 
@@ -214,27 +193,15 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
+
+            case R.id.menu_show_favorites:
+                startActivity(new Intent(this, FavouritesActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayDialog(String message) {
-        textViewDialogCaption.setText(message);
-
-        // set message visibility to false when user clicks on it
-        buttonDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                textViewDialogCaption.setText("");
-                dialog.dismiss();
-                isDialogVisible = false;
-            }
-        });
-
-        dialog.show();
-        isDialogVisible = true;
-    }
 
     /**
      * determines the number of columns in the grid layout
@@ -258,11 +225,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         return gridColumns;
     }
 
-    private void setCustomTypeFace() {
-        Utils.setCustomTypeFace(context, textViewDialogCaption);
-        Utils.setCustomTypeFace(context, textViewDialogTitle);
-        Utils.setCustomTypeFace(context, buttonDialog);
-    }
 
     private void initializeUI() {
 
@@ -270,11 +232,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         progressBar = findViewById(R.id.progress_bar);
 
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog);
-        textViewDialogTitle = dialog.findViewById(R.id.tv_dialog_title);
-        textViewDialogCaption = dialog.findViewById(R.id.tv_dialog_caption);
-        buttonDialog = dialog.findViewById(R.id.dismiss_dialog_btn);
     }
 
     @Override
@@ -298,5 +255,14 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         intent.putExtra(BuildConfig.INTENT_EXTRA_KEY_TITLE, getTitle());
         startActivity(intent);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isDialogVisible) {
+            UtilDialog.dismissDialog();
+            isDialogVisible = false;
+        }
     }
 }

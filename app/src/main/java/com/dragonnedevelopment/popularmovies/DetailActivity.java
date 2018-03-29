@@ -1,5 +1,6 @@
 package com.dragonnedevelopment.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -178,6 +179,7 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
      * @param args content
      * @return new AsyncTaskLoader
      */
+    @SuppressLint("StaticFieldLeak")
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {

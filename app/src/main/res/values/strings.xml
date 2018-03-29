@@ -61,5 +61,22 @@
     <string name="label_read_more">Read More</string>
     <string name="placeholder_trailer">The film trailer goes here.</string>
     <string name="menu_label_show_favourites">Show Favourites</string>
+    <string name="error_no_release_date">Release date unavailable.</string>
+
+    <string name="label_header_review">%1$s : REVIEWS</string>
+    <string name="label_header_trailer">%1$s : TRAILERS</string>
+    <string name="error_trailer_fetch_failed">Failed to fetch the trailer for this film.</string>
+    <string name="alert_no_trailer">No trailers have been found for this film. Sorry for any inconvience caused.</string>
+    <string name="error_trailer_load_failed">Failed to load trailers for this film. Status Code \\u003D</string>
+    <string name="error_review_fetch_failed">Failed to fetch reviews for this film.</string>
+    <string name="alert_no_reviews">No reviews have been found for this film.</string>
+    <string name="error_review_load_failed">Failed to load reviews for this film. Status Code \\u003D</string>
+    <string name="label_review_by">Review by %1$s</string>
+    <string name="exception_unknown_uri"><![CDATA[URI provided is unknown, and cannot be queried => %s]]></string>
+    <string name="exception_insert_failed"><![CDATA[Failed to insert film => %s]]></string>
+    <string name="exception_default_message">Not yet implemented.</string>
+    <string name="info_delete_successful">Selected film removed from favourites</string>
+    <string name="error_delete">Failed to remove film from favourites. Please try again.</string>
+    <string name="alert_no_favourites">You currently don\'t have any favourite films.\\n\\nYou can start by adding a film as favourite from its Detail screen.</string>
 
 </resources>
