@@ -1,7 +1,6 @@
 package com.dragonnedevelopment.popularmovies.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,9 +58,8 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
      * @param viewType images
      * @return a new MovieListAdapterViewHolder which holds the View for each list item
      */
-    @NonNull
     @Override
-    public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         int listItemLayoutId = R.layout.movie_list_item;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -78,7 +76,7 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
      * @param position the position in the list
      */
     @Override
-    public void onBindViewHolder(@NonNull MovieListAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(MovieListAdapterViewHolder holder, int position) {
 
         String poster;
         String posterUrl;

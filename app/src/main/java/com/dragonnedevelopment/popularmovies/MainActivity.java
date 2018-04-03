@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         // Initialise views
@@ -91,6 +92,36 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
             currentFilm = savedInstanceState.getParcelable(STATE_MOVIE);
             isDialogVisible = savedInstanceState.getBoolean(STATE_DIALOG);
         }
+    }
+
+    private void initializeUI() {
+
+        recyclerView = findViewById(R.id.recyclerView_movies);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        progressBar = findViewById(R.id.progress_bar);
+
+    }
+
+    /**
+     * determines the number of columns in the grid layout
+     *
+     * @return gridColumns (3 for portrait, 4 for landscape)
+     */
+    private int setGridColumns() {
+
+        int gridColumns = 0;
+
+        switch (getResources().getConfiguration().orientation) {
+            case Configuration.ORIENTATION_PORTRAIT:
+                gridColumns = BuildConfig.GRID_COLUMNS_PORTRAIT;
+                break;
+
+            case Configuration.ORIENTATION_LANDSCAPE:
+                gridColumns = BuildConfig.GRID_COLUMNS_LANDSCAPE;
+                break;
+        }
+
+        return gridColumns;
     }
 
     /**
@@ -200,38 +231,6 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    /**
-     * determines the number of columns in the grid layout
-     *
-     * @return gridColumns (3 for portrait, 4 for landscape)
-     */
-    private int setGridColumns() {
-
-        int gridColumns = 0;
-
-        switch (getResources().getConfiguration().orientation) {
-            case Configuration.ORIENTATION_PORTRAIT:
-                gridColumns = BuildConfig.GRID_COLUMNS_PORTRAIT;
-                break;
-
-            case Configuration.ORIENTATION_LANDSCAPE:
-                gridColumns = BuildConfig.GRID_COLUMNS_LANDSCAPE;
-                break;
-        }
-
-        return gridColumns;
-    }
-
-
-    private void initializeUI() {
-
-        recyclerView = findViewById(R.id.recyclerView_movies);
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        progressBar = findViewById(R.id.progress_bar);
-
     }
 
     @Override
