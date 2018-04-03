@@ -1,6 +1,7 @@
 package com.dragonnedevelopment.popularmovies.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,33 +43,96 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     private TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
     private Context context;
 
+    // interface which receives onClick messages
+    public interface TrailerAdapterOnClickHandler {
+
+        void onClick(FilmTrailer filmTrailer);
+    }
+
+    /**
+     * Initialise the dataset of the Adapter that contains the data to populate views to be used by
+     * the RecyclerView.
+     */
+
+    public TrailerAdapter (FilmTrailerResponse filmTrailerResponse, Film film, TrailerAdapterOnClickHandler clickHandler) {
+        this.filmTrailerResponse = filmTrailerResponse;
+        this.film = film;
+        this.clickHandler = clickHandler;
+    }
+
+    /**
+     * Custom ViewHolder class for the list items
+     */
+    public class ItemViewHolder extends ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.iv_trailer_thumbnail)
+        ImageView imageViewTrailerThumbnail;
+
+        @BindView(R.id.tv_trailer_name)
+        TextView textViewTrailerName;
+
+        private ItemViewHolder(View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
+            Utils.setCustomTypeFace(context, textViewTrailerName);
+            itemView.setOnClickListener(this);
+
+        }
+
+        /**
+         * this gets called when the child view is clicked
+         * @param view the child view
+         */
+        @Override
+        public void onClick(View view) {
+
+            int adapterPosition = getAdapterPosition();
+            FilmTrailer filmTrailer = filmTrailerList.get(adapterPosition - 1);
+            clickHandler.onClick(filmTrailer);
+
+        }
+
+    }
+
+    /**
+     * custom Viewholder class for the list header
+     */
+    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_header)
+        TextView listHeader;
+
+        private HeaderViewHolder(View headerView) {
+            super(headerView);
+            ButterKnife.bind(this, headerView);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
+    }
+
     /**
      * Called when a new ViewHolder gets created in the event of a RecyclerView being laid out.
      * This creates enough ViewHolders to fill up the screen and allow scrolling.
 
      * @return ViewHolder which holds the View for each list item
      */
-    @Nullable
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@Nullable ViewGroup viewGroup, int viewType) {
-        if (viewGroup != null) {
-            context = viewGroup.getContext();
-        }
+        context = viewGroup.getContext();
 
         if (viewType == TYPE_ITEM) {
-
             View view = LayoutInflater.from(context).inflate(R.layout.trailer_list_item, viewGroup, false);
             return new TrailerAdapter.ItemViewHolder(view);
-
         }else if (viewType == TYPE_HEADER) {
-
             View view = LayoutInflater.from(context).inflate(R.layout.list_header, viewGroup, false);
             return new TrailerAdapter.HeaderViewHolder(view);
-
         }else {
-
             return null;
-
         }
 
     }
@@ -130,72 +194,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.filmTrailerList = filmTrailerResponse.getFilmTrailerList();
 
         notifyDataSetChanged();
-    }
-
-    // interface which receives onClick messages
-    public interface TrailerAdapterOnClickHandler {
-
-        void onClick(FilmTrailer filmTrailer);
-    }
-
-    /**
-     * Initialise the dataset of the Adapter that contains the data to populate views to be used by
-     * the RecyclerView.
-     */
-
-    public TrailerAdapter (FilmTrailerResponse filmTrailerResponse, Film film, TrailerAdapterOnClickHandler clickHandler) {
-        this.filmTrailerResponse = filmTrailerResponse;
-        this.film = film;
-        this.clickHandler = clickHandler;
-    }
-
-    /**
-     * Custom ViewHolder class for the list items
-     */
-    public class ItemViewHolder extends ViewHolder implements View.OnClickListener {
-
-        @BindView(R.id.iv_trailer_thumbnail)
-        ImageView imageViewTrailerThumbnail;
-
-        @BindView(R.id.tv_trailer_name)
-        TextView textViewTrailerName;
-
-        private ItemViewHolder(View itemView) {
-            super(itemView);
-
-            ButterKnife.bind(this, itemView);
-            Utils.setCustomTypeFace(context, textViewTrailerName);
-            itemView.setOnClickListener(this);
-
-        }
-
-        /**
-         * this gets called when the child view is clicked
-         * @param view the child view
-         */
-        @Override
-        public void onClick(View view) {
-
-            int adapterPosition = getAdapterPosition();
-            FilmTrailer filmTrailer = filmTrailerList.get(adapterPosition - 1);
-            clickHandler.onClick(filmTrailer);
-
-        }
-
-    }
-
-    /**
-     * custom Viewholder class for the list header
-     */
-    public class HeaderViewHolder extends ViewHolder {
-
-        @BindView(R.id.tv_header)
-        TextView listHeader;
-
-        private HeaderViewHolder(View headerView) {
-            super(headerView);
-            ButterKnife.bind(this, headerView);
-        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.dragonnedevelopment.popularmovies.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<FilmReview> filmReviewList;
     private Context context;
 
-    // Initialise the dataset of the Adapter which contains the data to populate views to be used by the RecyclerView
+    // Initialise the data set of the Adapter which contains the data to populate views to be used by the RecyclerView
     public ReviewAdapter(FilmReviewResponse filmReviewResponse, Film film) {
         this.filmReviewResponse = filmReviewResponse;
         this.film = film;
@@ -91,7 +92,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
      * @return the Viewholder that holds the view for each list item.
      */
-    @Nullable
+
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@Nullable ViewGroup parent, int viewType) {
 
@@ -105,13 +107,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(context).inflate(R.layout.list_header, parent, false);
             return new HeaderViewHolder(view);
-        }else
-        return null;
+        }else {
+            return null;
+        }
     }
 
     // Called by RecyclerView to display the data at the specified position
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
