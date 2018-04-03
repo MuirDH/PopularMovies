@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.dragonnedevelopment.popularmovies.data.FilmContract.*;
+import com.dragonnedevelopment.popularmovies.data.FilmContract.FilmsEntry;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * Database helper for the Films Db Table. Manages database creation and version management.
  */
 
@@ -19,12 +19,13 @@ public class FilmDbHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
 
     // default constructor
-    FilmDbHelper(Context context){
+    FilmDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
 
     /**
      * called when the database is created for the first time
+     *
      * @param sqLiteDatabase the database created
      */
     @Override
@@ -45,9 +46,10 @@ public class FilmDbHelper extends SQLiteOpenHelper {
     /**
      * discards the old table of data and calls oncreate to recreate a new one. This only occurs
      * when the version number is incremented
+     *
      * @param sqLiteDatabase films database
-     * @param oldVersion old database version
-     * @param newVersion new database version
+     * @param oldVersion     old database version
+     * @param newVersion     new database version
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {

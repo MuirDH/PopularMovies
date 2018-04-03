@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 /**
  * PopularMovies Created by Muir on 27/03/2018.
- *
+ * <p>
  * Database schema for Favourite Films Database
  */
 public class FilmContract {

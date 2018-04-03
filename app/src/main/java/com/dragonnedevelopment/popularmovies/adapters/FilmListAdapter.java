@@ -55,7 +55,8 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
 
     public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_movie_poster) ImageView imageViewPoster;
+        @BindView(R.id.iv_movie_poster)
+        ImageView imageViewPoster;
 
         private MovieListAdapterViewHolder(View itemView) {
             super(itemView);

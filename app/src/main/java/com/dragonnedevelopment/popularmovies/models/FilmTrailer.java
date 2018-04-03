@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * A {@link FilmTrailer} object which contains details related to a single film trailer.
  */
-public class FilmTrailer implements Parcelable{
+public class FilmTrailer implements Parcelable {
 
     /**
      * {@link FilmTrailer} attributes
@@ -74,7 +74,7 @@ public class FilmTrailer implements Parcelable{
 
     }
 
-    public void setTrailerId(String trailerId){
+    public void setTrailerId(String trailerId) {
 
         this.trailerId = trailerId;
 
@@ -145,7 +145,7 @@ public class FilmTrailer implements Parcelable{
     }
 
     // Getter method for video URL
-    public String getVideoUrl (FilmTrailer filmTrailer) {
+    public String getVideoUrl(FilmTrailer filmTrailer) {
         return (filmTrailer.getTrailerSite().equals(BuildConfig.VIDEO_SITE_NAME)) ?
                 String.format(BuildConfig.BASE_VIDEO_URL, filmTrailer.getTrailerKey()) : null;
 
@@ -160,6 +160,11 @@ public class FilmTrailer implements Parcelable{
     }
 
     @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
 
         dest.writeString(trailerId);
@@ -171,11 +176,6 @@ public class FilmTrailer implements Parcelable{
         dest.writeInt(trailerSize);
         dest.writeString(trailerType);
 
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<FilmTrailer> CREATOR = new Creator<FilmTrailer>() {

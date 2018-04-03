@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -20,8 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragonnedevelopment.popularmovies.adapters.FavouritesAdapter;
-import com.dragonnedevelopment.popularmovies.data.FilmContract;
 import com.dragonnedevelopment.popularmovies.utils.Utils;
+
+import static com.dragonnedevelopment.popularmovies.data.FilmContract.FilmsEntry;
 
 /**
  * PopularMovies Created by Muir on 27/03/2018.
@@ -37,7 +39,6 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
     private Toast toast;
 
     private FavouritesAdapter favouritesAdapter;
-    private RecyclerView recyclerView;
     private TextView textViewEmptyList;
     private ImageView imageViewEmptyList;
 
@@ -47,7 +48,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
 
-        recyclerView = findViewById(R.id.list_favourites);
+        RecyclerView recyclerView = findViewById(R.id.list_favourites);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         favouritesAdapter = new FavouritesAdapter(context);
         recyclerView.setAdapter(favouritesAdapter);
@@ -65,19 +66,19 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
-                int numRowDeleted = 0;
+                int numRowDeleted;
 
                 int idToBeDeleted = (int) viewHolder.itemView.getTag();
 
                 String stringId = Integer.toString(idToBeDeleted);
-                Uri uri = FilmContract.FilmsEntry.CONTENT_URI;
+                Uri uri = FilmsEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
 
                 // delete a single row using the uri
                 numRowDeleted = getContentResolver().delete(uri, null, null);
                 if (numRowDeleted == 1) {
                     Utils.showToastMessage(context, toast, getString(R.string.info_delete_successful)).show();
-                }else {
+                } else {
                     Utils.showToastMessage(context, toast, getString(R.string.error_delete)).show();
                 }
 
@@ -92,10 +93,10 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
     }
 
     // instantiates and returns a new AsyncTaskLoader with the given id
+    @NonNull
     @SuppressLint("StaticFieldLeak")
-    @Nullable
     @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
 
             Cursor data = null;
@@ -105,7 +106,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
                 if (data != null) {
                     // deliver any previously loaded data
                     deliverResult(data);
-                }else {
+                } else {
                     forceLoad();
                 }
             }
@@ -113,18 +114,18 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
             @Nullable
             @Override
             public Cursor loadInBackground() {
-               try {
-                   return getContentResolver().query(FilmContract.FilmsEntry.CONTENT_URI,
-                   null,
-                   null,
-                   null,
-                           FilmContract.FilmsEntry._ID);
-               }catch (Exception e) {
-                   Utils.showToastMessage(context, toast, getString(R.string.error_favourites_load_failed)).show();
-                   Log.e(LOG_TAG, getString(R.string.error_favourites_load_failed));
-                   e.printStackTrace();
-                   return null;
-               }
+                try {
+                    return getContentResolver().query(FilmsEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            FilmsEntry._ID);
+                } catch (Exception e) {
+                    Utils.showToastMessage(context, toast, getString(R.string.error_favourites_load_failed)).show();
+                    Log.e(LOG_TAG, getString(R.string.error_favourites_load_failed));
+                    e.printStackTrace();
+                    return null;
+                }
             }
 
             public void deliverResult(Cursor data) {
@@ -136,14 +137,14 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
     // handles when a previously created loader has finished its load
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
 
         favouritesAdapter.swapCursor(data);
         if (favouritesAdapter.getItemCount() == 0) {
             textViewEmptyList.setText(getString(R.string.alert_no_favourites));
             textViewEmptyList.setVisibility(View.VISIBLE);
             imageViewEmptyList.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             textViewEmptyList.setText("");
             textViewEmptyList.setVisibility(View.GONE);
             imageViewEmptyList.setVisibility(View.GONE);
@@ -152,7 +153,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
     // handles when a previously created loader is being reset, thus making its data unavailable
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
         favouritesAdapter.swapCursor(null);
     }

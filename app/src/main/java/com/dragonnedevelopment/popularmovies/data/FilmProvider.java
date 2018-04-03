@@ -8,16 +8,18 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dragonnedevelopment.popularmovies.R;
+import com.dragonnedevelopment.popularmovies.data.FilmContract.FilmsEntry;
 
 import java.util.Objects;
 
 /**
  * PopularMovies Created by Muir on 27/03/2018.
- *
+ * <p>
  * {@link ContentProvider} for Films database
  */
 public class FilmProvider extends ContentProvider {
@@ -43,6 +45,7 @@ public class FilmProvider extends ContentProvider {
 
     /**
      * associates URIs with their integer match
+     *
      * @return uriMatcher
      */
     private static UriMatcher buildUriMatcher() {
@@ -70,7 +73,7 @@ public class FilmProvider extends ContentProvider {
      */
     @Nullable
     @Override
-    public Cursor query(Uri uri, @Nullable String[] projection, @Nullable String selection,
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
@@ -82,7 +85,7 @@ public class FilmProvider extends ContentProvider {
 
         switch (match) {
             case CODE_FILMS:
-                cursor = sqLiteDatabase.query(FilmContract.FilmsEntry.TABLE_NAME,
+                cursor = sqLiteDatabase.query(FilmsEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -92,11 +95,11 @@ public class FilmProvider extends ContentProvider {
                 break;
 
             case CODE_FILM_WITH_ID:
-                selection = FilmContract.FilmsEntry._ID + "=?";
-                selectionArgs = new String[] {
+                selection = FilmsEntry._ID + "=?";
+                selectionArgs = new String[]{
                         String.valueOf(ContentUris.parseId(uri))
                 };
-                cursor = sqLiteDatabase.query(FilmContract.FilmsEntry.TABLE_NAME,
+                cursor = sqLiteDatabase.query(FilmsEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -105,8 +108,8 @@ public class FilmProvider extends ContentProvider {
                         sortOrder);
                 break;
 
-                default:
-                    throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
+            default:
+                throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
         }
 
         // set notification URI on the cursor so it knows when to update in the event the data in the cursor changes
@@ -114,28 +117,12 @@ public class FilmProvider extends ContentProvider {
         return cursor;
     }
 
-    // determines the type of URI used to query the table
-    @Nullable
-    @Override
-    public String getType(Uri uri) {
-        final int match = uriMatcher.match(uri);
-
-        switch (match) {
-            case CODE_FILMS:
-                return FilmContract.FilmsEntry.CONTENT_LIST_TYPE;
-            case CODE_FILM_WITH_ID:
-                return FilmContract.FilmsEntry.CONTENT_ITEM_TYPE;
-                default:
-                    throw new UnsupportedOperationException(context.getString(R.string.exception_default_message));
-        }
-    }
-
     /**
      * inserts records in the Db table
      */
     @Nullable
     @Override
-    public Uri insert(Uri uri, @Nullable ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         Uri returnUri;
         long id;
 
@@ -146,11 +133,11 @@ public class FilmProvider extends ContentProvider {
 
         switch (match) {
             case CODE_FILMS:
-                id = sqLiteDatabase.insert(FilmContract.FilmsEntry.TABLE_NAME, null, contentValues);
+                id = sqLiteDatabase.insert(FilmsEntry.TABLE_NAME, null, contentValues);
                 break;
 
-                default:
-                    throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
+            default:
+                throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
         }
 
         //if the ID = -1, the insert has failed
@@ -159,18 +146,18 @@ public class FilmProvider extends ContentProvider {
             return null;
         }
 
-        returnUri = ContentUris.withAppendedId(FilmContract.FilmsEntry.CONTENT_URI, id);
+        returnUri = ContentUris.withAppendedId(FilmsEntry.CONTENT_URI, id);
 
         // notify the resolver if the uri has been changed, and return the newly inserted URI
-        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+        getContext().getContentResolver().notifyChange(uri, null);
 
         // this points to the newly inserted row of data
-        return  returnUri;
+        return returnUri;
     }
 
     // deletes records from the Db table
     @Override
-    public int delete(Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
 
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
@@ -182,7 +169,7 @@ public class FilmProvider extends ContentProvider {
             case CODE_FILMS:
                 // delete all rows which match the selection and selection args
                 rowsDeleted = sqLiteDatabase.delete(
-                        FilmContract.FilmsEntry.TABLE_NAME,
+                        FilmsEntry.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
@@ -190,32 +177,49 @@ public class FilmProvider extends ContentProvider {
 
             case CODE_FILM_WITH_ID:
                 // delete a single row given by the ID in the URI
-                selection = FilmContract.FilmsEntry._ID + "=?";
-                selectionArgs = new String[] {
+                selection = FilmsEntry._ID + "=?";
+                selectionArgs = new String[]{
                         String.valueOf(ContentUris.parseId(uri))
                 };
                 rowsDeleted = sqLiteDatabase.delete(
-                        FilmContract.FilmsEntry.TABLE_NAME,
+                        FilmsEntry.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
                 break;
 
-                default:
-                    throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
+            default:
+                throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
         }
 
         // Notify the ContentResolver of a change and return the number of items deleted
         if (rowsDeleted != 0) {
-            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(uri, null);
         }
 
         return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
         throw new UnsupportedOperationException(context.getString(R.string.exception_default_message));
     }
+
+    // determines the type of URI used to query the table
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        final int match = uriMatcher.match(uri);
+
+        switch (match) {
+            case CODE_FILMS:
+                return FilmsEntry.CONTENT_LIST_TYPE;
+            case CODE_FILM_WITH_ID:
+                return FilmsEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException(context.getString(R.string.exception_default_message));
+        }
+    }
+
 
 }

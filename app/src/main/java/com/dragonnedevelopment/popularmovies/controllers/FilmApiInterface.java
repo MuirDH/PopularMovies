@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 
 /**
  * PopularMovies Created by Muir on 13/03/2018.
- *
+ * <p>
  * Retrofit Interface for TMDb API. This interface defines the endpoints that includes details of
  * request methods and parameters
  */
@@ -29,7 +29,7 @@ public interface FilmApiInterface {
      * @return {@link Film} object
      */
     @GET("movie/{id}")
-    Call<Film> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
+    Call<Film> getFilmDetails(@Path("id") int id, @Query("api_key") String apiKey);
 
     /**
      * requests list of popular movies
@@ -42,16 +42,18 @@ public interface FilmApiInterface {
 
     /**
      * Requests list of trailers of a specific film by ID
-     * @param id the ID found in TMDb film list
+     *
+     * @param id     the ID found in TMDb film list
      * @param apiKey the individual api key
      * @return {@link FilmTrailer} object
      */
-    @GET ("movie/{id}/videos")
-    Call <FilmTrailerResponse> getFilmTrailerList(@Path("id") int id, @Query("api_key") String apiKey);
+    @GET("movie/{id}/videos")
+    Call<FilmTrailerResponse> getFilmTrailerList(@Path("id") int id, @Query("api_key") String apiKey);
 
     /**
      * Requests a list of reviews of a specific film by ID
-     * @param id the ID found in TMDb film list
+     *
+     * @param id     the ID found in TMDb film list
      * @param apiKey individual API key
      * @return {@link FilmReview} object
      */

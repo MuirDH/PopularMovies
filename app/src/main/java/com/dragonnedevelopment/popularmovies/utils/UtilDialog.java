@@ -13,7 +13,7 @@ import com.dragonnedevelopment.popularmovies.R;
  */
 public class UtilDialog {
 
-    public static boolean isDialogVisible;
+    private static boolean isDialogVisible;
 
     public static Dialog dialog;
 

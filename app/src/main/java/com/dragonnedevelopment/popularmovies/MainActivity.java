@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
         setContentView(R.layout.activity_main);
 
         // Initialise views
-        initializeUI();
+        initialiseUI();
 
         // enable layout for SwipeRefresh
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
         }
     }
 
-    private void initializeUI() {
+    private void initialiseUI() {
 
         recyclerView = findViewById(R.id.recyclerView_movies);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
@@ -133,21 +133,21 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
      */
     private void loadMovieData() {
 
-       if (Utils.isEmptyString(BuildConfig.API_KEY)) {
-           isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), context);
-           swipeRefreshLayout.setRefreshing(false);
-           return;
-       }
+        if (Utils.isEmptyString(BuildConfig.API_KEY)) {
+            isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), context);
+            swipeRefreshLayout.setRefreshing(false);
+            return;
+        }
 
-       SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-       String sortByPreferences = sharedPreferences.getString(
-               getString(R.string.settings_sort_by_key),
-               getString(R.string.settings_sort_by_default)
-       );
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortByPreferences = sharedPreferences.getString(
+                getString(R.string.settings_sort_by_key),
+                getString(R.string.settings_sort_by_default)
+        );
 
-       setActivityTitle(sortByPreferences);
+        setActivityTitle(sortByPreferences);
 
-       // make retrofit call to tmdb api
+        // make retrofit call to tmdb api
         try {
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.VISIBLE);
@@ -166,10 +166,10 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
                         filmListAdapter.setMovieData(filmResponse);
                         filmListAdapter.notifyDataSetChanged();
                         filmList = filmResponse.getFilmList();
-                    }else {
+                    } else {
                         progressBar.setVisibility(View.INVISIBLE);
                         isDialogVisible = UtilDialog.showDialog(getString(R.string.error_movie_load_failed)
-                        + statusCode, context);
+                                + statusCode, context);
                     }
                 }
 
@@ -181,13 +181,35 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
                             context);
                 }
             });
-        }catch (NoConnectivityException nce) {
+        } catch (NoConnectivityException nce) {
             progressBar.setVisibility(View.INVISIBLE);
             isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), context);
         }
 
     }
 
+    @Override
+    public void onRefresh() {
+        // refresh list when user swipes the device screen
+        loadMovieData();
+
+    }
+
+    /**
+     * launches DetailActivity screen when a poster is clicked
+     *
+     * @param film the film poster which was clicked
+     */
+    @Override
+    public void onClick(Film film) {
+
+        currentFilm = film;
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(BuildConfig.INTENT_EXTRA_KEY_MOVIE, currentFilm);
+        intent.putExtra(BuildConfig.INTENT_EXTRA_KEY_TITLE, getTitle());
+        startActivity(intent);
+
+    }
 
     /**
      * sets the activity title depending on the movie list preference selected
@@ -231,29 +253,6 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onRefresh() {
-        // refresh list when user swipes the device screen
-        loadMovieData();
-
-    }
-
-    /**
-     * launches DetailActivity screen when a poster is clicked
-     *
-     * @param film the film poster which was clicked
-     */
-    @Override
-    public void onClick(Film film) {
-
-        currentFilm = film;
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra(BuildConfig.INTENT_EXTRA_KEY_MOVIE, currentFilm);
-        intent.putExtra(BuildConfig.INTENT_EXTRA_KEY_TITLE, getTitle());
-        startActivity(intent);
-
     }
 
     @Override

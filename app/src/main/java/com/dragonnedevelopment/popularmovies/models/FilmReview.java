@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * A {@link FilmReview} object which contains details related to a single Film Review
  */
-public class FilmReview implements Parcelable{
+public class FilmReview implements Parcelable {
 
     /**
      * {@link FilmReview} attributes.
@@ -78,18 +78,6 @@ public class FilmReview implements Parcelable{
         this.reviewUrl = reviewUrl;
     }
 
-    public static final Creator<FilmReview> CREATOR = new Creator<FilmReview>() {
-        @Override
-        public FilmReview createFromParcel(Parcel in) {
-            return new FilmReview(in);
-        }
-
-        @Override
-        public FilmReview[] newArray(int size) {
-            return new FilmReview[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
@@ -103,4 +91,17 @@ public class FilmReview implements Parcelable{
         parcel.writeString(reviewContent);
         parcel.writeString(reviewUrl);
     }
+
+    public static final Creator<FilmReview> CREATOR = new Creator<FilmReview>() {
+        @Override
+        public FilmReview createFromParcel(Parcel in) {
+            return new FilmReview(in);
+        }
+
+        @Override
+        public FilmReview[] newArray(int size) {
+            return new FilmReview[size];
+        }
+    };
+
 }

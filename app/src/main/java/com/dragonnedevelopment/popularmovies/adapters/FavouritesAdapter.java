@@ -22,7 +22,7 @@ import static com.dragonnedevelopment.popularmovies.data.FilmContract.FilmsEntry
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * {@link FavouritesAdapter} an adapter which creates a list of film items to a {@link RecyclerView}
  */
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.ItemViewHolder> {
@@ -33,7 +33,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
     private Context context;
 
     public FavouritesAdapter(Context context) {
-         this.context = context;
+        this.context = context;
     }
 
     /**
@@ -73,7 +73,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
 
     /**
      * this method is called by the RecyclerView to display the film data at the specified position
-     * @param holder the ItemViewHolder
+     *
+     * @param holder   the ItemViewHolder
      * @param position the place specified by the RecyclerView
      */
     @Override
@@ -113,10 +114,11 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
 
     /**
      * Swap the old Cursor with a newly updated Cursor when the data changes and a re-query occurs.
+     *
      * @param cursor the cursor we are updating
      * @return tempCursor
      */
-    public Cursor swapCursor (Cursor cursor) {
+    public Cursor swapCursor(Cursor cursor) {
 
         // check if this cursor is the same as the previous cursor
         if (mCursor == cursor) {
@@ -139,6 +141,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
 
     /**
      * returns the number of items in the fetched list
+     *
      * @return the number of list items.
      */
     @Override
@@ -147,7 +150,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
         return (mCursor == null) ? 0 : mCursor.getCount();
 
     }
-
 
 
 }

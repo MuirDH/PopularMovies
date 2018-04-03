@@ -1,6 +1,7 @@
 package com.dragonnedevelopment.popularmovies.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -45,7 +46,6 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
     private DetailActivity detailActivity;
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
 
     private ReviewAdapter reviewAdapter;
 
@@ -67,14 +67,14 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         detailActivity = (DetailActivity) getActivity();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // inflate view object
         viewFragment = inflater.inflate(R.layout.fragment_review, container, false);
@@ -98,6 +98,17 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
 
     }
 
+    // Initialises Recyclerview layout in LinearLayout mode to display the list items
+    private void initialiseRecyclerViewLayout() {
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(detailActivity);
+        recyclerView = viewFragment.findViewById(R.id.list_reviews);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(reviewAdapter);
+
+    }
+
     /**
      * loads film review data into the adapter and displays it in the Recyclerview layout.
      * Alert Messages are displayed if one of the following occurs:
@@ -109,10 +120,8 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
         if (Utils.isEmptyString(BuildConfig.API_KEY)) {
             swipeRefreshLayout.setRefreshing(false);
             isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), detailActivity);
-            errorMessage = new StringBuilder()
-                    .append(getString(R.string.alert_api_key_missing))
-                    .append(getString(R.string.error_review_fetch_failed))
-                    .toString();
+            errorMessage = getString(R.string.alert_api_key_missing) +
+                    getString(R.string.error_review_fetch_failed);
 
             showHideEmptyListMessage(true);
             return;
@@ -142,15 +151,15 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
                             filmReviewList = filmReviewResponse.getFilmReviewList();
                             errorMessage = "";
                             showHideEmptyListMessage(false);
-                        }else {
+                        } else {
                             errorMessage = getString(R.string.alert_no_reviews);
                             showHideEmptyListMessage(true);
                         }
-                    }else {
+                    } else {
                         progressBar.setVisibility(View.INVISIBLE);
                         isDialogVisible = UtilDialog
                                 .showDialog(getString(R.string.error_review_load_failed)
-                                + statusCode, detailActivity);
+                                        + statusCode, detailActivity);
                         errorMessage = getString(R.string.error_review_fetch_failed);
                         showHideEmptyListMessage(true);
                     }
@@ -180,23 +189,13 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
         if (isEmptyList) {
             textViewEmptyList.setText(errorMessage);
             textViewEmptyList.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             // when list items are displayed
             textViewEmptyList.setText("");
             textViewEmptyList.setVisibility(View.GONE);
         }
     }
 
-    // Initialises Recyclerview layout in LinearLayout mode to display the list items
-    private void initialiseRecyclerViewLayout() {
-
-        layoutManager = new LinearLayoutManager(detailActivity);
-        recyclerView = viewFragment.findViewById(R.id.list_reviews);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(reviewAdapter);
-
-    }
 
     // refreshes the film list when the screen is swiped
     @Override

@@ -6,7 +6,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -18,7 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String LOG_TAG = SettingsActivity.class.getName();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
     }
@@ -29,21 +28,13 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences preferences;
 
         @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
+        public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.movie_settings);
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             Preference sortByPreferences = findPreference(getString(R.string.settings_sort_by_key));
             bindPreferenceSummaryToValue(sortByPreferences);
-        }
-
-        private void bindPreferenceSummaryToValue(Preference sortByPreferences) {
-
-            sortByPreferences.setOnPreferenceChangeListener(this);
-            preferences = PreferenceManager.getDefaultSharedPreferences(sortByPreferences.getContext());
-            String preferenceString = preferences.getString(sortByPreferences.getKey(), "");
-            onPreferenceChange(sortByPreferences, preferenceString);
         }
 
         @Override
@@ -63,5 +54,15 @@ public class SettingsActivity extends AppCompatActivity {
             } else preference.setSummary(stringValue);
             return true;
         }
+
+        private void bindPreferenceSummaryToValue(Preference sortByPreferences) {
+
+            sortByPreferences.setOnPreferenceChangeListener(this);
+            preferences = PreferenceManager.getDefaultSharedPreferences(sortByPreferences.getContext());
+            String preferenceString = preferences.getString(sortByPreferences.getKey(), "");
+            onPreferenceChange(sortByPreferences, preferenceString);
+        }
+
+
     }
 }

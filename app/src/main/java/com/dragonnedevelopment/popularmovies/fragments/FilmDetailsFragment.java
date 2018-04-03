@@ -1,6 +1,7 @@
 package com.dragonnedevelopment.popularmovies.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -57,7 +58,7 @@ public class FilmDetailsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         parentActivity = (DetailActivity) getActivity();
 
         // Inflate the view object
@@ -71,9 +72,26 @@ public class FilmDetailsFragment extends Fragment {
         return viewFragmentDetail;
     }
 
+    private void initialiseUi() {
+
+        ButterKnife.bind(this, viewFragmentDetail);
+        showAnimation = AnimationUtils.loadAnimation(parentActivity, R.anim.poster_animation);
+
+    }
+
+    private void setCustomFont() {
+
+        Utils.setCustomTypeFace(parentActivity, textViewFilmDate);
+        Utils.setCustomTypeFace(parentActivity, textViewFilmLanguage);
+        Utils.setCustomTypeFace(parentActivity, textViewFilmGenre);
+        Utils.setCustomTypeFace(parentActivity, textViewFilmRating);
+        Utils.setCustomTypeFace(parentActivity, textViewFilmOverview);
+
+    }
+
     private void displayFilmData() {
 
-        int [] genreIds = film.getGenreIds();
+        int[] genreIds = film.getGenreIds();
 
         // display backdrop poster image
         Picasso.with(parentActivity)
@@ -97,27 +115,11 @@ public class FilmDetailsFragment extends Fragment {
         textViewFilmGenre.setText(film.getGenres(genreIds));
 
         // display average user rating
-        textViewFilmRating.setText(getString(R.string.vote_display));
+        textViewFilmRating.setText(getString(R.string.vote_display, film.getVoteAverage()));
 
         // display plot synopsis
         textViewFilmOverview.setText(film.getOverview());
 
     }
 
-    private void setCustomFont() {
-
-        Utils.setCustomTypeFace(parentActivity, textViewFilmDate);
-        Utils.setCustomTypeFace(parentActivity, textViewFilmLanguage);
-        Utils.setCustomTypeFace(parentActivity, textViewFilmGenre);
-        Utils.setCustomTypeFace(parentActivity, textViewFilmRating);
-        Utils.setCustomTypeFace(parentActivity, textViewFilmOverview);
-
-    }
-
-    private void initialiseUi() {
-
-        ButterKnife.bind(this, viewFragmentDetail);
-        showAnimation = AnimationUtils.loadAnimation(parentActivity, R.anim.poster_animation);
-
-    }
 }

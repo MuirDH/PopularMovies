@@ -9,7 +9,7 @@ public class BuildConfig {
 
     // TODO: you must add your TMDb API key here for the app to work
     // TODO: before uploading code to GitHub or other public forum, remember to REMOVE the API_KEY string!
-    public static final String API_KEY = "2d454e31983b7d489ab4dfcc25b75cea";
+    public static final String API_KEY = "";
 
     // number of columns to be displayed
     public static final int GRID_COLUMNS_PORTRAIT = 3;

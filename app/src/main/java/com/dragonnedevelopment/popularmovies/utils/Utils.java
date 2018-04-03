@@ -26,8 +26,8 @@ public class Utils {
 
     public static final String LOG_TAG = Utils.class.getSimpleName();
 
-    public static final String DATE_FORMAT_FROM = "yyyy-MM-dd";
-    public static final String DTE_FORMAT_TO = "dd MMMM yyyy";
+    private static final String DATE_FORMAT_FROM = "yyyy-MM-dd";
+    private static final String DATE_FORMAT_TO = "dd MMMM yyyy";
 
 
     private void Utils() {
@@ -46,9 +46,8 @@ public class Utils {
 
     public static boolean hasConnectivity(Context context) {
         final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        if (connectivityManager != null) networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     /**
@@ -59,6 +58,7 @@ public class Utils {
      * @param message the message to be shown
      * @return toast
      */
+
     @SuppressLint("ShowToast")
     public static Toast showToastMessage(Context context, Toast toast, String message) {
         if (toast != null) {
@@ -117,7 +117,7 @@ public class Utils {
         String dateFormatted = "";
 
         SimpleDateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT_FROM, Locale.ENGLISH);
-        SimpleDateFormat newFormat = new SimpleDateFormat(DTE_FORMAT_TO, Locale.ENGLISH);
+        SimpleDateFormat newFormat = new SimpleDateFormat(DATE_FORMAT_TO, Locale.ENGLISH);
 
         try {
             Date date = inputFormat.parse(inputDate);

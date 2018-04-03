@@ -1,6 +1,7 @@
 package com.dragonnedevelopment.popularmovies.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +46,7 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
     private DetailActivity detailActivity;
     private View viewFragment;
     private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private TrailerAdapter trailerAdapter;
     private ProgressBar progressBar;
     private TextView textViewEmptyList;
@@ -59,14 +61,14 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
     private String errorMessage;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         detailActivity = (DetailActivity) getActivity();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         // inflate the view object
@@ -88,6 +90,17 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
         loadTrailerData();
 
         return viewFragment;
+    }
+
+    // initialises the RecyclerView layout in LinearLayout mode, to be used to display the list items
+    private void initialiseRecyclerViewLayout() {
+
+        layoutManager = new LinearLayoutManager(detailActivity);
+        recyclerView = viewFragment.findViewById(R.id.list_trailers);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(trailerAdapter);
+
     }
 
     /**
@@ -142,13 +155,13 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
                             trailerAdapter.notifyDataSetChanged();
                             filmTrailerList = filmTrailerResponse.getFilmTrailerList();
                             errorMessage = "";
-                            showHideEmptyListMessage(true);
+                            showHideEmptyListMessage(false);
                         } else {
                             errorMessage = getString(R.string.alert_no_trailer);
                             showHideEmptyListMessage(true);
                         }
 
-                    }else {
+                    } else {
                         progressBar.setVisibility(View.INVISIBLE);
                         isDialogVisible = UtilDialog.showDialog(getString(R.string.error_trailer_load_failed) + statusCode, detailActivity);
                         errorMessage = getString(R.string.error_trailer_fetch_failed);
@@ -160,7 +173,7 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
                 public void onFailure(Call<FilmTrailerResponse> call, Throwable t) {
 
                     progressBar.setVisibility(View.INVISIBLE);
-                    isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), detailActivity);
+                    isDialogVisible = UtilDialog.showDialog(getString(R.string.error_trailer_fetch_failed), detailActivity);
                     errorMessage = getString(R.string.error_trailer_fetch_failed);
                     showHideEmptyListMessage(true);
 
@@ -181,7 +194,7 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
             textViewEmptyList.setText(errorMessage);
             textViewEmptyList.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
             // when the list items are displayed
             textViewEmptyList.setText("");
             textViewEmptyList.setVisibility(View.GONE);
@@ -189,14 +202,26 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
         }
     }
 
-    // initialises the RecyclerView layout in LinearLayout mode, to be used to display the list items
-    private void initialiseRecyclerViewLayout() {
+    /**
+     * this method is invoked when a list item is clicked. It plays the video of the clicked
+     * trailer item
+     *
+     * @param filmTrailer the trailer clicked on
+     */
+    @Override
+    public void onClick(FilmTrailer filmTrailer) {
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(detailActivity);
-        recyclerView = viewFragment.findViewById(R.id.list_trailers);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(trailerAdapter);
+        if (YouTubeIntents.isYouTubeInstalled(detailActivity)) {
+            if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(detailActivity)) {
+                detailActivity
+                        .startActivity(YouTubeIntents
+                                .createPlayVideoIntentWithOptions(detailActivity, filmTrailer.getTrailerKey(), false, true));
+            } else {
+                detailActivity
+                        .startActivity(YouTubeIntents
+                                .createPlayVideoIntent(detailActivity, filmTrailer.getTrailerKey()));
+            }
+        }
 
     }
 
@@ -208,27 +233,6 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
 
     }
 
-    /**
-     * this method is invoked when a list item is clicked. It plays the video of the clicked
-     * trailer item
-     * @param filmTrailer the trailer clicked on
-     */
-    @Override
-    public void onClick(FilmTrailer filmTrailer) {
-
-        if (YouTubeIntents.isYouTubeInstalled(detailActivity)) {
-            if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(detailActivity)) {
-                detailActivity
-                        .startActivity(YouTubeIntents
-                        .createPlayVideoIntentWithOptions(detailActivity, filmTrailer.getTrailerKey(), false, true));
-            }else {
-                detailActivity
-                        .startActivity(YouTubeIntents
-                        .createPlayVideoIntent(detailActivity, filmTrailer.getTrailerKey()));
-            }
-        }
-
-    }
 
     @Override
     public void onDestroy() {

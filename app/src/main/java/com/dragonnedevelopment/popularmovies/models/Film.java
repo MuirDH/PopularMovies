@@ -190,19 +190,6 @@ public class Film implements Parcelable {
         return genres;
     }
 
-
-    public static final Creator<Film> CREATOR = new Creator<Film>() {
-        @Override
-        public Film createFromParcel(Parcel in) {
-            return new Film(in);
-        }
-
-        @Override
-        public Film[] newArray(int size) {
-            return new Film[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
@@ -220,4 +207,18 @@ public class Film implements Parcelable {
         parcel.writeString(backdropPath);
         parcel.writeIntArray(genreIds);
     }
+
+
+    public static final Creator<Film> CREATOR = new Creator<Film>() {
+        @Override
+        public Film createFromParcel(Parcel in) {
+            return new Film(in);
+        }
+
+        @Override
+        public Film[] newArray(int size) {
+            return new Film[size];
+        }
+    };
+
 }

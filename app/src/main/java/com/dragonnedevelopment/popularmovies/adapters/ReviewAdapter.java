@@ -2,8 +2,8 @@ package com.dragonnedevelopment.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +23,11 @@ import butterknife.ButterKnife;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * {@link ReviewAdapter} creates a list of film items to a {@link RecyclerView}
  */
 
-public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final String LOG_TAG = ReviewAdapter.class.getSimpleName();
 
@@ -46,7 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     // Custom Viewholder class for the list items
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends ViewHolder {
 
         @BindView(R.id.expand_view)
         ExpandableTextView expandableTextView;
@@ -65,7 +65,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     // Custom Viewholder class for the list header
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public class HeaderViewHolder extends ViewHolder {
 
         @BindView(R.id.tv_header)
         TextView listHeader;
@@ -78,6 +78,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     /**
      * return the view type to be inflated in the adapter
+     *
      * @param position position in the adapter
      * @return header type (if the position is 0), or item type in all other cases
      */
@@ -89,37 +90,35 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     /**
      * called when a new ViewHolder gets created in the event of a RecyclerView being laid out.
      * This creates enough Viewholders to fill up the screen and allow scrolling.
-
+     *
      * @return the Viewholder that holds the view for each list item.
      */
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@Nullable ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        if (parent != null) {
-            context = parent.getContext();
-        }
+        context = parent.getContext();
 
         if (viewType == TYPE_ITEM) {
             View view = LayoutInflater.from(context).inflate(R.layout.review_list_item, parent, false);
             return new ItemViewHolder(view);
-        }else if (viewType == TYPE_HEADER) {
+        } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(context).inflate(R.layout.list_header, parent, false);
             return new HeaderViewHolder(view);
-        }else {
+        } else {
             return null;
         }
     }
 
     // Called by RecyclerView to display the data at the specified position
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             headerViewHolder.listHeader.setText(context.getString(R.string.label_header_review, film.getTitle()));
-        }else if (holder instanceof ItemViewHolder) {
+        } else if (holder instanceof ItemViewHolder) {
             if (position < getItemCount()) {
                 ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
                 FilmReview filmReview = filmReviewResponse.getFilmReviewList().get(position - 1);
@@ -139,6 +138,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     /**
      * Used to refresh the list once the Adapter is already created, to avoid creating a new one.
+     *
      * @param filmReviewResponse the new film set to be displayed
      */
     public void setReviewData(FilmReviewResponse filmReviewResponse) {

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * A {@link FilmReviewResponse} object which contains a list of Film Trailers
  */
 public class FilmReviewResponse {
@@ -32,9 +32,10 @@ public class FilmReviewResponse {
 
     /**
      * default constructor which constructs a new {@link FilmReviewResponse} object
+     *
      * @param filmReviewList a list of film reviews
-     * @param filmId the id of the film
-     * @param page the page it's on
+     * @param filmId         the id of the film
+     * @param page           the page it's on
      */
     private FilmReviewResponse(List<FilmReview> filmReviewList, int filmId, int page) {
         this.filmReviewList = filmReviewList;

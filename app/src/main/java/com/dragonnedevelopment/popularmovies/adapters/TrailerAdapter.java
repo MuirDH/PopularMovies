@@ -26,13 +26,13 @@ import static android.support.v7.widget.RecyclerView.ViewHolder;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
- *
+ * <p>
  * {@link TrailerAdapter} creates a list of film items to a {@link android.support.v7.widget.RecyclerView}
  */
 
 public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private  static final String LOG_TAG = TrailerAdapter.class.getSimpleName();
+    private static final String LOG_TAG = TrailerAdapter.class.getSimpleName();
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -54,7 +54,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
      * the RecyclerView.
      */
 
-    public TrailerAdapter (FilmTrailerResponse filmTrailerResponse, Film film, TrailerAdapterOnClickHandler clickHandler) {
+    public TrailerAdapter(FilmTrailerResponse filmTrailerResponse, Film film, TrailerAdapterOnClickHandler clickHandler) {
         this.filmTrailerResponse = filmTrailerResponse;
         this.film = film;
         this.clickHandler = clickHandler;
@@ -82,6 +82,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         /**
          * this gets called when the child view is clicked
+         *
          * @param view the child view
          */
         @Override
@@ -117,7 +118,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Called when a new ViewHolder gets created in the event of a RecyclerView being laid out.
      * This creates enough ViewHolders to fill up the screen and allow scrolling.
-
+     *
      * @return ViewHolder which holds the View for each list item
      */
     @NonNull
@@ -128,10 +129,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (viewType == TYPE_ITEM) {
             View view = LayoutInflater.from(context).inflate(R.layout.trailer_list_item, viewGroup, false);
             return new TrailerAdapter.ItemViewHolder(view);
-        }else if (viewType == TYPE_HEADER) {
+        } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(context).inflate(R.layout.list_header, viewGroup, false);
             return new TrailerAdapter.HeaderViewHolder(view);
-        }else {
+        } else {
             return null;
         }
 
@@ -156,7 +157,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
                 ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
                 FilmTrailer filmTrailer = filmTrailerResponse.getFilmTrailerList().get(position - 1);
 
-                if (!Utils.isEmptyString(filmTrailer.getTrailerKey())){
+                if (!Utils.isEmptyString(filmTrailer.getTrailerKey())) {
 
                     Picasso.with(context)
                             .load(filmTrailer.getVideoThumbnailImage(filmTrailer))
@@ -186,9 +187,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Method used to refresh the list once the Adapter is already created, to avoid creating a new
      * Adapter.
+     *
      * @param filmTrailerResponse the new film set to be displayed
      */
-    public void setTrailerData (FilmTrailerResponse filmTrailerResponse) {
+    public void setTrailerData(FilmTrailerResponse filmTrailerResponse) {
 
         this.filmTrailerResponse = filmTrailerResponse;
         this.filmTrailerList = filmTrailerResponse.getFilmTrailerList();

@@ -26,7 +26,7 @@ public class FilmApiController {
 
         // check if device has a connection, else throw an exception error and exit early
         if (!Utils.hasConnectivity(context)) {
-            throw  new NoConnectivityException();
+            throw new NoConnectivityException();
         }
 
         if (retrofit == null) {
