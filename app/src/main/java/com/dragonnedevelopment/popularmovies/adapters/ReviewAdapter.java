@@ -36,7 +36,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private FilmReviewResponse filmReviewResponse;
     private Film film;
-    private List<FilmReview> filmReviewList;
     private Context context;
 
     // Initialise the data set of the Adapter which contains the data to populate views to be used by the RecyclerView
@@ -84,7 +83,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
      */
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
+        if (position == 0) return TYPE_HEADER;
+        else return TYPE_ITEM;
     }
 
     /**
@@ -100,14 +100,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         context = parent.getContext();
 
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.review_list_item, parent, false);
-            return new ItemViewHolder(view);
-        } else if (viewType == TYPE_HEADER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_header, parent, false);
-            return new HeaderViewHolder(view);
-        } else {
-            return null;
+        switch (viewType) {
+            case TYPE_ITEM: {
+                View view = LayoutInflater.from(context).inflate(R.layout.review_list_item, parent, false);
+                return new ItemViewHolder(view);
+            }
+            case TYPE_HEADER: {
+                View view = LayoutInflater.from(context).inflate(R.layout.list_header, parent, false);
+                return new HeaderViewHolder(view);
+            }
+            default:
+                return null;
         }
     }
 
@@ -133,7 +136,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
     // returns number of the items in the fetched list
     @Override
     public int getItemCount() {
-        return (filmReviewResponse == null) ? 0 : filmReviewResponse.getFilmReviewList().size() + 1;
+        if (filmReviewResponse == null) return 0;
+        else return filmReviewResponse.getFilmReviewList().size() + 1;
     }
 
     /**
@@ -143,7 +147,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ViewHolder> {
      */
     public void setReviewData(FilmReviewResponse filmReviewResponse) {
         this.filmReviewResponse = filmReviewResponse;
-        filmReviewList = filmReviewResponse.getFilmReviewList();
+        List<FilmReview> filmReviewList = filmReviewResponse.getFilmReviewList();
         notifyDataSetChanged();
     }
 }

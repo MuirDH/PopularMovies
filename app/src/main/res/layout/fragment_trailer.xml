@@ -6,15 +6,15 @@
     android:background="@color/colorBackground">
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_refresh_layout">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_trailers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/list_trailers"
-            android:padding="@dimen/activity_margin"/>
+            android:padding="@dimen/activity_margin" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -26,10 +26,10 @@
 
     <!-- Loading indicator shown before the app loads for the first time -->
     <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progress_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

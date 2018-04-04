@@ -45,7 +45,8 @@ public class Utils {
     }
 
     public static boolean hasConnectivity(Context context) {
-        final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
@@ -75,9 +76,12 @@ public class Utils {
      * @param view    the textview in question
      */
     public static void setCustomTypeFace(Context context, View view) {
-        Typeface typefaceRegular = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_condensed_r.ttf");
-        Typeface typefaceThin = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_condensed_l.ttf");
-        Typeface typefaceRegularNoto = Typeface.createFromAsset(context.getAssets(), "fonts/notosans_r.ttf");
+        Typeface typefaceRegular = Typeface.createFromAsset(context.getAssets(),
+                "fonts/roboto_condensed_r.ttf");
+        Typeface typefaceThin = Typeface.createFromAsset(context.getAssets(),
+                "fonts/roboto_condensed_l.ttf");
+        Typeface typefaceRegularNoto = Typeface.createFromAsset(context.getAssets(),
+                "fonts/notosans_r.ttf");
 
         TextView textView = (TextView) view;
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements FilmListAdapter.MovieListAdapterOnClickHandler, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements
+        FilmListAdapter.MovieListAdapterOnClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String STATE_DIALOG = "state_dialog";
@@ -62,19 +64,31 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
         initialiseUI();
 
         // enable layout for SwipeRefresh
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
+        enableLayoutForSwipeRefresh();
 
         // Initialise Recyclerview for displaying poster images using grid layout
+        initialiseRecyclerViewGridLayout();
+
+        // Set adapter
+        setAdapter();
+
+        loadMovieData();
+    }
+
+    private void setAdapter() {
+        filmListAdapter = new FilmListAdapter(this);
+        recyclerView.setAdapter(filmListAdapter);
+    }
+
+    private void initialiseRecyclerViewGridLayout() {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, setGridColumns());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true); // changes in content don't change the child layout size
+    }
 
-        // Set adapter
-        filmListAdapter = new FilmListAdapter(this);
-        recyclerView.setAdapter(filmListAdapter);
-
-        loadMovieData();
+    private void enableLayoutForSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
     }
 
     @Override
@@ -133,59 +147,80 @@ public class MainActivity extends AppCompatActivity implements FilmListAdapter.M
      */
     private void loadMovieData() {
 
-        if (Utils.isEmptyString(BuildConfig.API_KEY)) {
-            isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), context);
-            swipeRefreshLayout.setRefreshing(false);
-            return;
-        }
+        if (isApiKeyPresent()) return;
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortByPreferences = sharedPreferences.getString(
-                getString(R.string.settings_sort_by_key),
-                getString(R.string.settings_sort_by_default)
-        );
+        String sortByPreferences = getSortOrderPreference();
 
         setActivityTitle(sortByPreferences);
 
         // make retrofit call to tmdb api
+        makeRetrofitCallToApi(sortByPreferences);
+
+    }
+
+    private void makeRetrofitCallToApi(String sortByPreferences) {
         try {
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.VISIBLE);
 
-            FilmApiInterface apiInterface = FilmApiController.getClient(context).create(FilmApiInterface.class);
+            FilmApiInterface apiInterface = FilmApiController.getClient(context)
+                    .create(FilmApiInterface.class);
 
-            final Call<FilmResponse> responseCall = apiInterface.getFilmList(sortByPreferences, BuildConfig.API_KEY);
+            final Call<FilmResponse> responseCall = apiInterface
+                    .getFilmList(sortByPreferences, BuildConfig.API_KEY);
 
             responseCall.enqueue(new Callback<FilmResponse>() {
                 @Override
                 public void onResponse(Call<FilmResponse> call, Response<FilmResponse> response) {
                     int statusCode = response.code();
                     if (response.isSuccessful()) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        setProgressBarInvisible();
                         filmResponse = response.body();
                         filmListAdapter.setMovieData(filmResponse);
                         filmListAdapter.notifyDataSetChanged();
                         filmList = filmResponse.getFilmList();
                     } else {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        isDialogVisible = UtilDialog.showDialog(getString(R.string.error_movie_load_failed)
-                                + statusCode, context);
+                        setProgressBarInvisible();
+                        isDialogVisible = UtilDialog.showDialog
+                                (getString(R.string.error_movie_load_failed)
+                                        + statusCode, context);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<FilmResponse> call, Throwable t) {
 
-                    progressBar.setVisibility(View.INVISIBLE);
+                    setProgressBarInvisible();
                     isDialogVisible = UtilDialog.showDialog(getString(R.string.error_movie_fetch_failed),
                             context);
                 }
             });
         } catch (NoConnectivityException nce) {
-            progressBar.setVisibility(View.INVISIBLE);
+            setProgressBarInvisible();
             isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), context);
         }
+    }
 
+    private void setProgressBarInvisible() {
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @NonNull
+    private String getSortOrderPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.getString(
+                getString(R.string.settings_sort_by_key),
+                getString(R.string.settings_sort_by_default)
+        );
+    }
+
+    private boolean isApiKeyPresent() {
+        if (Utils.isEmptyString(BuildConfig.API_KEY)) {
+            isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), context);
+            swipeRefreshLayout.setRefreshing(false);
+            return true;
+        }
+        return false;
     }
 
     @Override

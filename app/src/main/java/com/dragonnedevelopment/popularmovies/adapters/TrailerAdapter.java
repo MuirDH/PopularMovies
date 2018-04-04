@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.support.v7.widget.RecyclerView.ViewHolder;
 
 /**
  * PopularMovies Created by Muir on 29/03/2018.
@@ -54,7 +53,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
      * the RecyclerView.
      */
 
-    public TrailerAdapter(FilmTrailerResponse filmTrailerResponse, Film film, TrailerAdapterOnClickHandler clickHandler) {
+    public TrailerAdapter(FilmTrailerResponse filmTrailerResponse, Film film,
+                          TrailerAdapterOnClickHandler clickHandler) {
         this.filmTrailerResponse = filmTrailerResponse;
         this.film = film;
         this.clickHandler = clickHandler;
@@ -63,7 +63,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Custom ViewHolder class for the list items
      */
-    public class ItemViewHolder extends ViewHolder implements View.OnClickListener {
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_trailer_thumbnail)
         ImageView imageViewTrailerThumbnail;
@@ -112,7 +112,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
+        if (position == 0) return TYPE_HEADER;
+        else return TYPE_ITEM;
     }
 
     /**
@@ -126,14 +127,19 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(@Nullable ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
 
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.trailer_list_item, viewGroup, false);
-            return new TrailerAdapter.ItemViewHolder(view);
-        } else if (viewType == TYPE_HEADER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_header, viewGroup, false);
-            return new TrailerAdapter.HeaderViewHolder(view);
-        } else {
-            return null;
+        switch (viewType) {
+            case TYPE_ITEM: {
+                View view = LayoutInflater.from(context).inflate(R.layout.trailer_list_item,
+                        viewGroup, false);
+                return new ItemViewHolder(view);
+            }
+            case TYPE_HEADER: {
+                View view = LayoutInflater.from(context).inflate(R.layout.list_header,
+                        viewGroup, false);
+                return new HeaderViewHolder(view);
+            }
+            default:
+                return null;
         }
 
     }
@@ -143,33 +149,30 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
      */
 
     @Override
-    public void onBindViewHolder(@Nullable ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof HeaderViewHolder) {
 
             HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
             viewHolder.listHeader.setText(context.getString(R.string.label_header_trailer, film.getTitle()));
 
-        } else if (holder instanceof ItemViewHolder) {
+        } else if (holder instanceof ItemViewHolder && position < getItemCount()) {
 
-            if (position < getItemCount()) {
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            FilmTrailer filmTrailer = filmTrailerResponse.getFilmTrailerList().get(position - 1);
 
-                ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-                FilmTrailer filmTrailer = filmTrailerResponse.getFilmTrailerList().get(position - 1);
+            if (!Utils.isEmptyString(filmTrailer.getTrailerKey())) {
 
-                if (!Utils.isEmptyString(filmTrailer.getTrailerKey())) {
-
-                    Picasso.with(context)
-                            .load(filmTrailer.getVideoThumbnailImage(filmTrailer))
-                            .placeholder(R.drawable.ic_logo)
-                            .error(R.drawable.ic_no_image)
-                            .into(itemViewHolder.imageViewTrailerThumbnail);
-
-                }
-
-                itemViewHolder.textViewTrailerName.setText(filmTrailer.getTrailerName().trim());
+                Picasso.with(context)
+                        .load(filmTrailer.getVideoThumbnailImage(filmTrailer))
+                        .placeholder(R.drawable.ic_logo)
+                        .error(R.drawable.ic_no_image)
+                        .into(itemViewHolder.imageViewTrailerThumbnail);
 
             }
+
+            itemViewHolder.textViewTrailerName.setText(filmTrailer.getTrailerName().trim());
+
         }
 
     }
@@ -180,7 +183,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
 
-        return (filmTrailerResponse == null) ? 0 : filmTrailerResponse.getFilmTrailerList().size() + 1;
+        if (filmTrailerResponse == null) return 0;
+        else return filmTrailerResponse.getFilmTrailerList().size() + 1;
 
     }
 

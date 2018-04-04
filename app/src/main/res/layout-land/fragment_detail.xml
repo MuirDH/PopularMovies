@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:fillViewport="true"
-    tools:context=".DetailActivity">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,13 +44,12 @@
 
             <!-- Language Fields -->
 
-            <LinearLayout
-                style="@style/DetailFilmLayoutHolder">
+            <LinearLayout style="@style/DetailFilmLayoutHolder">
 
                 <TextView
                     android:id="@+id/tv_movie_language_label"
                     style="@style/DetailMovieLabels"
-                    android:text="@string/language"/>
+                    android:text="@string/language" />
 
                 <TextView
                     android:id="@+id/tv_movie_language"

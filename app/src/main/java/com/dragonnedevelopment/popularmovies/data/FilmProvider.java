@@ -15,8 +15,6 @@ import android.util.Log;
 import com.dragonnedevelopment.popularmovies.R;
 import com.dragonnedevelopment.popularmovies.data.FilmContract.FilmsEntry;
 
-import java.util.Objects;
-
 /**
  * PopularMovies Created by Muir on 27/03/2018.
  * <p>
@@ -48,7 +46,7 @@ public class FilmProvider extends ContentProvider {
      *
      * @return uriMatcher
      */
-    private static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
 
         // Initialise a UriMatcher with no matches by passing in NO_MATCH to the constructor
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -113,7 +111,7 @@ public class FilmProvider extends ContentProvider {
         }
 
         // set notification URI on the cursor so it knows when to update in the event the data in the cursor changes
-        cursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -157,7 +155,8 @@ public class FilmProvider extends ContentProvider {
 
     // deletes records from the Db table
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
 
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
@@ -189,7 +188,8 @@ public class FilmProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException(context.getString(R.string.exception_unknown_uri, uri));
+                throw new UnsupportedOperationException
+                        (context.getString(R.string.exception_unknown_uri, uri));
         }
 
         // Notify the ContentResolver of a change and return the number of items deleted
@@ -201,7 +201,8 @@ public class FilmProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
+                      @Nullable String selection, @Nullable String[] selectionArgs) {
         throw new UnsupportedOperationException(context.getString(R.string.exception_default_message));
     }
 
@@ -220,6 +221,5 @@ public class FilmProvider extends ContentProvider {
                 throw new UnsupportedOperationException(context.getString(R.string.exception_default_message));
         }
     }
-
 
 }

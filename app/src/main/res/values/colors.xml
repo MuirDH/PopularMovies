@@ -2,13 +2,20 @@
 <resources>
     <color name="colorPrimary">#F44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorPrimaryLight">#FFCDD2</color>
     <color name="colorAccent">#9E9E9E</color>
     <color name="colorBackground">#F1F1F1</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorBlack">#F2000000</color>
+
+    <!-- settings menu -->
     <color name="colorSettingsPrimary">#000000</color>
     <color name="colorSettingsBackground">#222222</color>
+
+    <!-- tab colour -->
     <color name="colorTabBackground">#757575</color>
+
+    <!-- favourites list -->
     <color name="colorListBackground">#E2DFD6</color>
-    <color name="colorPrimaryLight">#FFCDD2</color>
+
 </resources>

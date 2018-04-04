@@ -58,11 +58,10 @@ public class SettingsActivity extends AppCompatActivity {
         private void bindPreferenceSummaryToValue(Preference sortByPreferences) {
 
             sortByPreferences.setOnPreferenceChangeListener(this);
-            preferences = PreferenceManager.getDefaultSharedPreferences(sortByPreferences.getContext());
+            preferences = PreferenceManager
+                    .getDefaultSharedPreferences(sortByPreferences.getContext());
             String preferenceString = preferences.getString(sortByPreferences.getKey(), "");
             onPreferenceChange(sortByPreferences, preferenceString);
         }
-
-
     }
 }

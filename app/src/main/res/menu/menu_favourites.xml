@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_show_favorites"
-        android:title="@string/menu_label_show_favourites"
         android:icon="@drawable/ic_faves_folder"
+        android:title="@string/menu_label_show_favourites"
         app:showAsAction="always" />
 
 </menu>

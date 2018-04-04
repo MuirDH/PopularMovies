@@ -47,6 +47,8 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
 
     private RecyclerView recyclerView;
 
+    private RecyclerView.LayoutManager layoutManager;
+
     private ReviewAdapter reviewAdapter;
 
     private ProgressBar progressBar;
@@ -78,7 +80,7 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
 
         // inflate view object
         viewFragment = inflater.inflate(R.layout.fragment_review, container, false);
-        progressBar = viewFragment.findViewById(R.id.progress_indicator);
+        progressBar = viewFragment.findViewById(R.id.progress_bar);
         textViewEmptyList = viewFragment.findViewById(R.id.tv_empty_list);
 
         // enable layout for SwipeRefresh
@@ -101,7 +103,7 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
     // Initialises Recyclerview layout in LinearLayout mode to display the list items
     private void initialiseRecyclerViewLayout() {
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(detailActivity);
+        layoutManager = new LinearLayoutManager(detailActivity);
         recyclerView = viewFragment.findViewById(R.id.list_reviews);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -119,7 +121,8 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
     private void loadReviewData() {
         if (Utils.isEmptyString(BuildConfig.API_KEY)) {
             swipeRefreshLayout.setRefreshing(false);
-            isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), detailActivity);
+            isDialogVisible = UtilDialog.showDialog
+                    (getString(R.string.alert_api_key_missing), detailActivity);
             errorMessage = getString(R.string.alert_api_key_missing) +
                     getString(R.string.error_review_fetch_failed);
 
@@ -131,7 +134,8 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.VISIBLE);
 
-            FilmApiInterface filmApiInterface = FilmApiController.getClient(detailActivity)
+            FilmApiInterface filmApiInterface = FilmApiController
+                    .getClient(detailActivity)
                     .create(FilmApiInterface.class);
 
             final Call<FilmReviewResponse> reviewResponseCall =
@@ -139,11 +143,12 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
 
             reviewResponseCall.enqueue(new Callback<FilmReviewResponse>() {
                 @Override
-                public void onResponse(Call<FilmReviewResponse> call, Response<FilmReviewResponse> response) {
+                public void onResponse(Call<FilmReviewResponse> call,
+                                       Response<FilmReviewResponse> response) {
                     int statusCode = response.code();
 
                     if (response.isSuccessful()) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        setProgressBarInvisible();
                         filmReviewResponse = response.body();
                         reviewAdapter.setReviewData(filmReviewResponse);
                         if (reviewAdapter.getItemCount() > 1) {
@@ -156,7 +161,7 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
                             showHideEmptyListMessage(true);
                         }
                     } else {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        setProgressBarInvisible();
                         isDialogVisible = UtilDialog
                                 .showDialog(getString(R.string.error_review_load_failed)
                                         + statusCode, detailActivity);
@@ -168,19 +173,25 @@ public class FilmReviewFragment extends Fragment implements SwipeRefreshLayout.O
                 @Override
                 public void onFailure(Call<FilmReviewResponse> call, Throwable t) {
 
-                    progressBar.setVisibility(View.INVISIBLE);
-                    isDialogVisible = UtilDialog.showDialog(getString(R.string.error_review_fetch_failed), detailActivity);
+                    setProgressBarInvisible();
+                    isDialogVisible = UtilDialog.showDialog
+                            (getString(R.string.error_review_fetch_failed), detailActivity);
                     errorMessage = getString(R.string.error_review_fetch_failed);
                     showHideEmptyListMessage(true);
 
                 }
             });
         } catch (NoConnectivityException nce) {
-            progressBar.setVisibility(View.INVISIBLE);
-            isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), detailActivity);
+            setProgressBarInvisible();
+            isDialogVisible = UtilDialog.showDialog(getString
+                    (R.string.error_no_connection), detailActivity);
             errorMessage = getString(R.string.error_review_fetch_failed);
             showHideEmptyListMessage(true);
         }
+    }
+
+    private void setProgressBarInvisible() {
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     // shows and hides the empty list message

@@ -66,7 +66,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.favourites_list_item, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.favourites_list_item, parent, false);
         return new ItemViewHolder(view);
 
     }
@@ -80,7 +81,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.It
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        String filmPosterUrl = "";
+        String filmPosterUrl;
 
         // Get indices for the _id, film id, film title, and film poster image columns in the Db.
         int idIndex = mCursor.getColumnIndex(FilmsEntry._ID);

@@ -73,16 +73,21 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         // set up Tab layout and viewpager
         ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), DetailActivity.this));
+        viewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(),
+                DetailActivity.this));
         tabLayout.setupWithViewPager(viewPager);
 
         // initialise the loader when the activity is launched for the first time
+        initialiseLoaderWhenFirstTimeLaunched(savedInstanceState);
+
+    }
+
+    private void initialiseLoaderWhenFirstTimeLaunched(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             isFavouriteFilm = savedInstanceState.getBoolean(STATE_TAG_FAVOURITE);
         } else {
             getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         }
-
     }
 
     @Override
@@ -124,7 +129,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             case R.id.menu_add_favourite:
                 if (isFavouriteFilm) {
-                    Utils.showToastMessage(context, toast, getString(R.string.info_already_faved)).show();
+                    showAlreadyInFavesToast();
                 } else {
                     addToFavourites();
                 }
@@ -133,14 +138,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
+    private void showAlreadyInFavesToast() {
+        Utils.showToastMessage(context, toast,
+                getString(R.string.info_already_faved)).show();
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menuAddFavourite = menu.getItem(0);
-        if (isFavouriteFilm) {
-            menuAddFavourite.setIcon(R.drawable.ic_star);
-        } else {
-            menuAddFavourite.setIcon(R.drawable.ic_star_border);
-        }
+        menuAddFavourite.setIcon(isFavouriteFilm ? R.drawable.ic_star : R.drawable.ic_star_border);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -167,7 +173,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (uri == null) {
             Utils.showToastMessage(context, toast, getString(R.string.error_insert)).show();
         } else {
-            Utils.showToastMessage(context, toast, getString(R.string.info_insert_successful)).show();
+            Utils.showToastMessage(context, toast,
+                    getString(R.string.info_insert_successful)).show();
             isFavouriteFilm = true;
             menuAddFavourite.setIcon(R.drawable.ic_star);
         }
@@ -185,7 +192,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        final String selectionClause = "((" + FilmsEntry.COLUMN_FILM_ID + " = " + currentFilm.getId() + "))";
+        final String selectionClause = "((" + FilmsEntry.COLUMN_FILM_ID
+                + " = " + currentFilm.getId() + "))";
 
         return new AsyncTaskLoader<Cursor>(this) {
 
@@ -213,7 +221,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                             null,
                             FilmsEntry._ID);
                 } catch (Exception e) {
-                    Utils.showToastMessage(context, toast, getString(R.string.error_favourites_load_failed)).show();
+                    Utils.showToastMessage(context, toast,
+                            getString(R.string.error_favourites_load_failed)).show();
                     Log.e(LOG_TAG, getString(R.string.error_favourites_load_failed));
                     e.printStackTrace();
                     return null;

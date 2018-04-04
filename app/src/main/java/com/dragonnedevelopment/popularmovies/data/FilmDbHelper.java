@@ -38,7 +38,8 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 FilmsEntry.COLUMN_FILM_ID + " INTEGER" + " NOT NULL" + ", " +
                 FilmsEntry.COLUMN_POSTER_PATH + " TEXT" + " NOT NULL" + ", " +
                 FilmsEntry.COLUMN_FILM_TITLE + " TEXT" + " NOT NULL" + ", " +
-                FilmsEntry.COLUMN_LAST_UPDATED + " TIMESTAMP" + " NOT NULL" + " DEFAULT CURRENT_TIMESTAMP);";
+                FilmsEntry.COLUMN_LAST_UPDATED + " TIMESTAMP" + " NOT NULL"
+                + " DEFAULT CURRENT_TIMESTAMP);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
     }

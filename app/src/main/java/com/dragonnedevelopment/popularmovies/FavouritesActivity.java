@@ -57,16 +57,16 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
         imageViewEmptyList = findViewById(R.id.iv_empty_list);
 
         // method which recognises when an item is swiped by the user to be deleted
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback
+                (0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-                int numRowDeleted;
 
                 int idToBeDeleted = (int) viewHolder.itemView.getTag();
 
@@ -75,12 +75,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
                 uri = uri.buildUpon().appendPath(stringId).build();
 
                 // delete a single row using the uri
-                numRowDeleted = getContentResolver().delete(uri, null, null);
-                if (numRowDeleted == 1) {
-                    Utils.showToastMessage(context, toast, getString(R.string.info_delete_successful)).show();
-                } else {
-                    Utils.showToastMessage(context, toast, getString(R.string.error_delete)).show();
-                }
+                deleteSingleRow(uri);
 
                 // restart the loader to re-query for all tasks after the deletion
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, FavouritesActivity.this);
@@ -90,6 +85,16 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
         // initialise the loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+
+    private void deleteSingleRow(Uri uri) {
+        int numRowDeleted;
+        numRowDeleted = getContentResolver().delete(uri, null, null);
+        if (numRowDeleted == 1) {
+            Utils.showToastMessage(context, toast, getString(R.string.info_delete_successful)).show();
+        } else {
+            Utils.showToastMessage(context, toast, getString(R.string.error_delete)).show();
+        }
     }
 
     // instantiates and returns a new AsyncTaskLoader with the given id

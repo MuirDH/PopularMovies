@@ -53,7 +53,8 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
         return position;
     }
 
-    public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
         @BindView(R.id.iv_movie_poster)
         ImageView imageViewPoster;
@@ -107,10 +108,10 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
      * @param position the position in the list
      */
     @Override
-    public void onBindViewHolder(MovieListAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieListAdapterViewHolder holder, int position) {
 
-        String poster = "";
-        String posterUrl = "";
+        String poster;
+        String posterUrl;
 
         if (position < getItemCount()) {
             Film film = filmResponse.getFilmList().get(position);
@@ -134,7 +135,8 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.MovieL
      */
     @Override
     public int getItemCount() {
-        return (filmResponse == null) ? 0 : filmResponse.getFilmList().size();
+        if (filmResponse == null) return 0;
+        else return filmResponse.getFilmList().size();
     }
 
     /**

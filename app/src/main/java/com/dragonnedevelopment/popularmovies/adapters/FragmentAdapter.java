@@ -81,7 +81,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
             image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
         }
 
-
         SpannableString spannableString = new SpannableString("  " + TAB_TITLES[position]);
         ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
 

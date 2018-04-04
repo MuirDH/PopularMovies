@@ -73,7 +73,7 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
 
         // inflate the view object
         viewFragment = inflater.inflate(R.layout.fragment_trailer, container, false);
-        progressBar = viewFragment.findViewById(R.id.progress_indicator);
+        progressBar = viewFragment.findViewById(R.id.progress_bar);
         textViewEmptyList = viewFragment.findViewById(R.id.tv_empty_list);
 
         // enable layout for SwipeRefresh
@@ -117,12 +117,11 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
 
             swipeRefreshLayout.setRefreshing(false);
 
-            isDialogVisible = UtilDialog.showDialog(getString(R.string.alert_api_key_missing), detailActivity);
+            isDialogVisible = UtilDialog.showDialog(getString
+                    (R.string.alert_api_key_missing), detailActivity);
 
-            errorMessage = new StringBuilder()
-                    .append(getString(R.string.alert_api_key_missing))
-                    .append(getString(R.string.error_trailer_fetch_failed))
-                    .toString();
+            errorMessage = getString(R.string.alert_api_key_missing) +
+                    getString(R.string.error_trailer_fetch_failed);
 
             showHideEmptyListMessage(true);
             return;
@@ -132,20 +131,22 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.VISIBLE);
 
-            FilmApiInterface filmApiInterface = FilmApiController.getClient(detailActivity).
-                    create(FilmApiInterface.class);
+            FilmApiInterface filmApiInterface = FilmApiController
+                    .getClient(detailActivity)
+                    .create(FilmApiInterface.class);
 
             final Call<FilmTrailerResponse> responseCall =
                     filmApiInterface.getFilmTrailerList(film.getId(), BuildConfig.API_KEY);
 
             responseCall.enqueue(new Callback<FilmTrailerResponse>() {
                 @Override
-                public void onResponse(Call<FilmTrailerResponse> call, Response<FilmTrailerResponse> response) {
+                public void onResponse(Call<FilmTrailerResponse> call,
+                                       Response<FilmTrailerResponse> response) {
 
                     int statusCode = response.code();
 
                     if (response.isSuccessful()) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        setProgressBarInvisible();
                         filmTrailerResponse = response.body();
 
                         trailerAdapter.setTrailerData(filmTrailerResponse);
@@ -162,8 +163,9 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
                         }
 
                     } else {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        isDialogVisible = UtilDialog.showDialog(getString(R.string.error_trailer_load_failed) + statusCode, detailActivity);
+                        setProgressBarInvisible();
+                        isDialogVisible = UtilDialog.showDialog(getString
+                                (R.string.error_trailer_load_failed) + statusCode, detailActivity);
                         errorMessage = getString(R.string.error_trailer_fetch_failed);
                         showHideEmptyListMessage(true);
                     }
@@ -172,19 +174,25 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
                 @Override
                 public void onFailure(Call<FilmTrailerResponse> call, Throwable t) {
 
-                    progressBar.setVisibility(View.INVISIBLE);
-                    isDialogVisible = UtilDialog.showDialog(getString(R.string.error_trailer_fetch_failed), detailActivity);
+                    setProgressBarInvisible();
+                    isDialogVisible = UtilDialog.showDialog(getString
+                            (R.string.error_trailer_fetch_failed), detailActivity);
                     errorMessage = getString(R.string.error_trailer_fetch_failed);
                     showHideEmptyListMessage(true);
 
                 }
             });
         } catch (NoConnectivityException nce) {
-            progressBar.setVisibility(View.INVISIBLE);
-            isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection), detailActivity);
+            setProgressBarInvisible();
+            isDialogVisible = UtilDialog.showDialog(getString(R.string.error_no_connection),
+                    detailActivity);
             errorMessage = getString(R.string.error_trailer_fetch_failed);
             showHideEmptyListMessage(true);
         }
+    }
+
+    private void setProgressBarInvisible() {
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void showHideEmptyListMessage(boolean isEmptyList) {
@@ -215,11 +223,13 @@ public class FilmTrailerFragment extends Fragment implements SwipeRefreshLayout.
             if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(detailActivity)) {
                 detailActivity
                         .startActivity(YouTubeIntents
-                                .createPlayVideoIntentWithOptions(detailActivity, filmTrailer.getTrailerKey(), false, true));
+                                .createPlayVideoIntentWithOptions
+                                        (detailActivity, filmTrailer.getTrailerKey(),
+                                                false, true));
             } else {
                 detailActivity
-                        .startActivity(YouTubeIntents
-                                .createPlayVideoIntent(detailActivity, filmTrailer.getTrailerKey()));
+                        .startActivity(YouTubeIntents.createPlayVideoIntent
+                                (detailActivity, filmTrailer.getTrailerKey()));
             }
         }
 

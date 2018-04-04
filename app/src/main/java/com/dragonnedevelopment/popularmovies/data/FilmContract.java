@@ -25,7 +25,10 @@ public class FilmContract {
     // Inner class which defines the content of the FILMS table
     public static final class FilmsEntry implements BaseColumns {
 
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FILMS).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI
+                .buildUpon()
+                .appendPath(PATH_FILMS)
+                .build();
 
         /**
          * MIME type of the {@link #CONTENT_URI} for a list of items

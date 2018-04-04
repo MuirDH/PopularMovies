@@ -6,8 +6,8 @@
 
     <item
         android:id="@+id/menu_add_favourite"
-        android:title="@string/menu_label_add_favourites"
         android:icon="@drawable/ic_star_border"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/menu_label_add_favourites"
+        app:showAsAction="ifRoom" />
 
 </menu>

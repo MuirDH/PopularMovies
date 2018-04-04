@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +24,7 @@
 
         <!-- Release Date Fields -->
 
-        <LinearLayout
-            style="@style/DetailFilmLayoutHolder">
+        <LinearLayout style="@style/DetailFilmLayoutHolder">
 
             <TextView
                 android:id="@+id/tv_movie_date_label"
@@ -43,13 +40,12 @@
 
         <!-- Language Fields -->
 
-        <LinearLayout
-            style="@style/DetailFilmLayoutHolder">
+        <LinearLayout style="@style/DetailFilmLayoutHolder">
 
             <TextView
                 android:id="@+id/tv_movie_language_label"
                 style="@style/DetailMovieLabels"
-                android:text="@string/language"/>
+                android:text="@string/language" />
 
             <TextView
                 android:id="@+id/tv_movie_language"
@@ -60,8 +56,7 @@
 
         <!-- Genre Fields -->
 
-        <LinearLayout
-            style="@style/DetailFilmLayoutHolder">
+        <LinearLayout style="@style/DetailFilmLayoutHolder">
 
             <TextView
                 android:id="@+id/tv_movie_genre_label"
@@ -77,8 +72,7 @@
 
         <!-- Rating Fields -->
 
-        <LinearLayout
-            style="@style/DetailFilmLayoutHolder">
+        <LinearLayout style="@style/DetailFilmLayoutHolder">
 
             <TextView
                 android:id="@+id/tv_movie_rating_label"

@@ -7,8 +7,6 @@
     <string name="movie_genre">Genre</string>
     <string name="movie_rating">Average Rating</string>
 
-    <string name="title_load_error">Movie Load Error</string>
-    <string name="dialog_placeholder">Dialog</string>
     <string name="ok">OK</string>
 
     <string name="vote_display">%.1f / 10</string>
@@ -18,6 +16,7 @@
     <string name="regular_roboto_cond">RegularRobotoCond</string>
     <string name="regular_noto">RegularNoto</string>
     <string name="light_roboto_cond">LightRobotoCond</string>
+    <string name="tag_regular_noto">RegularNoto</string>
 
     <!-- Settings -->
     <string name="settings_menu_item">Settings</string>
@@ -42,41 +41,56 @@
     <!-- sort by upcoming -->
     <string name="settings_sort_by_upcoming_label">Upcoming</string>
     <string name="settings_sort_by_upcoming_value" translatable="false">upcoming</string>
-    <string name="language">Language</string>
+
 
     <!-- dialog messages -->
-    <string name="alert_api_key_missing">The API Key has is missing. Please contact the developer for support.</string>
-    <string name="error_movie_load_failed">Failed to load list of popular movies. Status Code \\u003D</string>
+    <string name="alert_api_key_missing">The API Key has is missing.
+        Please contact the developer for support.</string>
+    <string name="error_movie_load_failed">Failed to load list of popular movies.
+        Status Code \\u003D</string>
     <string name="error_movie_fetch_failed">Failed to fetch list of popular movies.</string>
-    <string name="error_no_connection">No internet connection found. Please ensure that your device is connected to the internet and try again.</string>
-    <string name="menu_label_add_favourites">Add to Favourites</string>
+    <string name="error_no_connection">No internet connection found.
+        Please ensure that your device is connected to the internet and try again.</string>
     <string name="info_already_faved">This film has already been added to your favourites.</string>
     <string name="error_insert">Failed to add film to your favourites. Please try again.</string>
     <string name="info_insert_successful">This film has been added to your favourites.</string>
     <string name="error_favourites_load_failed">Failed to load favourite movies list.</string>
-    <string name="no_image">no image symbol</string>
-    <string name="tag_regular_noto">RegularNoto</string>
-    <string name="placeholder_review_author">Author Name</string>
-    <string name="placeholder_review">The film review goes here.</string>
-    <string name="label_read_more">Read More</string>
-    <string name="placeholder_trailer">The film trailer goes here.</string>
-    <string name="menu_label_show_favourites">Show Favourites</string>
     <string name="error_no_release_date">Release date unavailable.</string>
-
-    <string name="label_header_review">%1$s : REVIEWS</string>
-    <string name="label_header_trailer">%1$s : TRAILERS</string>
     <string name="error_trailer_fetch_failed">Failed to fetch the trailer for this film.</string>
-    <string name="alert_no_trailer">No trailers have been found for this film. Sorry for any inconvenience caused.</string>
-    <string name="error_trailer_load_failed">Failed to load trailers for this film. Status Code \\u003D</string>
+    <string name="alert_no_trailer">No trailers have been found for this film.
+        Sorry for any inconvenience caused.</string>
+    <string name="error_trailer_load_failed">Failed to load trailers for this film.
+        Status Code \\u003D</string>
     <string name="error_review_fetch_failed">Failed to fetch reviews for this film.</string>
     <string name="alert_no_reviews">No reviews have been found for this film.</string>
-    <string name="error_review_load_failed">Failed to load reviews for this film. Status Code \\u003D</string>
-    <string name="label_review_by">Review by %1$s</string>
+    <string name="error_review_load_failed">Failed to load reviews for this film.
+        Status Code \\u003D</string>
     <string name="exception_unknown_uri"><![CDATA[URI provided is unknown, and cannot be queried => %s]]></string>
     <string name="exception_insert_failed"><![CDATA[Failed to insert film => %s]]></string>
     <string name="exception_default_message">Not yet implemented.</string>
     <string name="info_delete_successful">Selected film removed from favourites</string>
     <string name="error_delete">Failed to remove film from favourites. Please try again.</string>
-    <string name="alert_no_favourites">You currently don\'t have any favourite films. \n\nYou can start by adding a film as favourite from its Detail screen.</string>
+    <string name="alert_no_favourites">You currently don\'t have any favourite films.
+        \n\nYou can start by adding a film as favourite from its Detail screen.</string>
+    <string name="title_load_error">Movie Load Error</string>
+
+    <string name="no_image">no image symbol</string>
+
+    <!-- menu -->
+    <string name="menu_label_add_favourites">Add to Favourites</string>
+    <string name="menu_label_show_favourites">Show Favourites</string>
+
+    <string name="placeholder_review_author">Author Name</string>
+    <string name="placeholder_review">The film review goes here.</string>
+    <string name="placeholder_trailer">The film trailer goes here.</string>
+
+    <string name="dialog_placeholder">Dialog</string>
+    <string name="language">Language</string>
+
+    <string name="label_header_review">%1$s : REVIEWS</string>
+    <string name="label_header_trailer">%1$s : TRAILERS</string>
+    <string name="label_read_more">Read More</string>
+    <string name="label_review_by">Review by %1$s</string>
+
 
 </resources>

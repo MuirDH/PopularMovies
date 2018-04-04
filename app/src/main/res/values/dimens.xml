@@ -8,22 +8,31 @@
     <dimen name="txtsize_title">28sp</dimen>
     <dimen name="textsize_small">16sp</dimen>
     <dimen name="textsize_xsmall">14sp</dimen>
+    <dimen name="textsize_medium">18sp</dimen>
 
     <!-- dialog -->
     <dimen name="dialog_width">250dp</dimen>
     <dimen name="dialog_title_padding">10dp</dimen>
     <dimen name="dialog_message_margin">20dp</dimen>
     <dimen name="dialog_divider_height">1dp</dimen>
+
     <dimen name="poster_spacing">2dp</dimen>
+
+    <!-- tabs -->
     <dimen name="tab_layout_height">52dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
     <dimen name="tab_padding">12dp</dimen>
+
+    <!-- film label -->
     <dimen name="film_label_width">150dp</dimen>
     <dimen name="film_label_height">150dp</dimen>
+
+    <!-- film trailers -->
     <dimen name="trailer_list_margin">60dp</dimen>
     <dimen name="trailer_list_height">60dp</dimen>
     <dimen name="trailer_list_width">60dp</dimen>
-    <dimen name="textsize_medium">18sp</dimen>
+
+    <!-- review list -->
     <dimen name="review_list_vertical_margin">8dp</dimen>
 
 </resources>

@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/activity_margin"
-    android:paddingBottom="@dimen/activity_margin"
-    android:background="@drawable/list_selector">
+    android:background="@drawable/list_selector"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_margin">
 
     <TextView
         android:id="@+id/tv_review_author"
         style="@style/TextViewReviewAuthor"
-        tools:text="@string/placeholder_review_author"/>
+        tools:text="@string/placeholder_review_author" />
 
-    <com.ms.square.android.expandabletextview.ExpandableTextView
-        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+    <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
         android:id="@+id/expand_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        expandableTextView:maxCollapsedLines="3"
-        expandableTextView:animDuration="200">
+        expandableTextView:animDuration="200"
+        expandableTextView:maxCollapsedLines="3">
 
         <TextView
             android:id="@+id/expandable_tv"
             style="@style/TextViewReview"
-            tools:text="@string/placeholder_review"/>
+            tools:text="@string/placeholder_review" />
 
         <ImageButton
             android:id="@+id/btn_expand_collapse"
             style="@style/ButtonExpandCollapse"
-            android:contentDescription="@string/label_read_more"/>
+            android:contentDescription="@string/label_read_more" />
 
     </com.ms.square.android.expandabletextview.ExpandableTextView>
 

@@ -146,16 +146,18 @@ public class FilmTrailer implements Parcelable {
 
     // Getter method for video URL
     public String getVideoUrl(FilmTrailer filmTrailer) {
-        return (filmTrailer.getTrailerSite().equals(BuildConfig.VIDEO_SITE_NAME)) ?
-                String.format(BuildConfig.BASE_VIDEO_URL, filmTrailer.getTrailerKey()) : null;
+        if (filmTrailer.getTrailerSite().equals(BuildConfig.VIDEO_SITE_NAME))
+            return String.format(BuildConfig.BASE_VIDEO_URL, filmTrailer.getTrailerKey());
+        else return null;
 
     }
 
     // getter method for video thumbnail image url
     public String getVideoThumbnailImage(FilmTrailer filmTrailer) {
 
-        return (filmTrailer.getTrailerSite().equals(BuildConfig.VIDEO_SITE_NAME)) ?
-                String.format(BuildConfig.BASE_VIDEO_THUMBNAIL_URL, filmTrailer.getTrailerKey()) : null;
+        if (filmTrailer.getTrailerSite().equals(BuildConfig.VIDEO_SITE_NAME))
+            return String.format(BuildConfig.BASE_VIDEO_THUMBNAIL_URL, filmTrailer.getTrailerKey());
+        else return null;
 
     }
 

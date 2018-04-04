@@ -25,9 +25,7 @@ public class FilmApiController {
     public static Retrofit getClient(Context context) throws NoConnectivityException {
 
         // check if device has a connection, else throw an exception error and exit early
-        if (!Utils.hasConnectivity(context)) {
-            throw new NoConnectivityException();
-        }
+        checkForConnection(context);
 
         if (retrofit == null) {
             // Create OkhttpClient.Builder object
@@ -50,6 +48,10 @@ public class FilmApiController {
                     .build();
         }
         return retrofit;
+    }
+
+    private static void checkForConnection(Context context) throws NoConnectivityException {
+        if (!Utils.hasConnectivity(context)) throw new NoConnectivityException();
     }
 
 
