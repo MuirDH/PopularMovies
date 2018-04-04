@@ -22,12 +22,12 @@
         expandableTextView:maxCollapsedLines="3">
 
         <TextView
-            android:id="@+id/expandable_tv"
+            android:id="@+id/expandable_text"
             style="@style/TextViewReview"
             tools:text="@string/placeholder_review" />
 
         <ImageButton
-            android:id="@+id/btn_expand_collapse"
+            android:id="@+id/expand_collapse"
             style="@style/ButtonExpandCollapse"
             android:contentDescription="@string/label_read_more" />
 

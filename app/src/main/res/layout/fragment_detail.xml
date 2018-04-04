@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/iv_movie"
-            style="@style/DetailMovieImageLand"
+            style="@style/DetailMovieImage"
             android:contentDescription="@string/cd_movie_poster" />
 
         <TextView
