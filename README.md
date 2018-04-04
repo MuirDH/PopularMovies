@@ -1,5 +1,7 @@
 # PopularMovies
-This is the first project in Udacity's Android Development NanoDegree.
+This is the first two projects in Udacity's Android Development NanoDegree.
+
+Credit for the Expandable TextView goes to https://github.com/Manabu-GT/ExpandableTextView
 
 PROJECT LICENSE
 
